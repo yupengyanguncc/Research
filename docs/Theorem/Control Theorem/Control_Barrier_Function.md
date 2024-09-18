@@ -14,3 +14,4 @@ Working on this
 
 $$
 h(\mathbf{x}) = \frac{1}{2} \mathbf{x}^T P \mathbf{x}
+$$
