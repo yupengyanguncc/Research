@@ -5,8 +5,6 @@ baseurl: /docs
 url: https://just-the-docs.github.io
 mathjax: true
 
-aux_links:
-  Template Repository: https://yupengyanguncc.github.io/Research/
 
 defaults:
   - scope:
@@ -53,3 +51,6 @@ search:
 # Enable or disable the side/mobile menu globally
 # Nav menu can also be selectively enabled or disabled using page variables or the minimal layout
 nav_enabled: true
+
+Yupeng:
+  name: Yupeng Yang
