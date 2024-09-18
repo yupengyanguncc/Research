@@ -18,7 +18,7 @@ $$
 \dot{\mathbf{x}} = f(\mathbf{x}) + g(\mathbf{x})u
 $$
 
-where $$\mathbf{x}\in\mathcal{X}\sub\mathbb{R}^{d}$$, $$\mathbf{u}_\!\in\!\mathcal{U}\!\sub\!\mathbb{R}^{q}$$ denotes the control input. 
+where $$\mathbf{x}\in\mathcal{X}\sub\mathbb{R}^{d}$$, $$\mathbf{u}\in\mathcal{U}\sub\mathbb{R}^{q}$$ denotes the control input. 
 $$F:\mathbb{R}^{d} \mapsto \mathbb{R}^{d}$$ and $$G\!:\!\mathbb{R}^{d}\!\mapsto\!\mathbb{R}^{d\times q}$$ are locally Lipschitz continuous.
 
 $$
