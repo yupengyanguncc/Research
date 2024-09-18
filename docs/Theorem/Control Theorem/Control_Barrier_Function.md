@@ -41,7 +41,7 @@ $$
 \sup_{\mathbf{u}\in\mathcal{U}}\{\dot{h}(\mathbf{x}, \mathbf{u})\}\geq -\kappa(h(\mathbf{x}))
 $$
 
-for all $$\mathbf{x}\in\mathcal{X}
+for all $$\mathbf{x}\in\mathcal{X}$$
 . 
 
 
