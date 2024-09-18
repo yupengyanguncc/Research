@@ -1,11 +1,18 @@
 title: Research Document
-description: This site uses Just the Docs, a documentation theme for Jekyll
+description: This is a research document for Yupeng Yang! Robots are interesting!
 theme: just-the-docs
-
+baseurl: /docs
 url: https://just-the-docs.github.io
 
 aux_links:
   Template Repository: https://yupengyanguncc.github.io/Research/
+
+defaults:
+  - scope:
+      path: "docs" # an empty string here means all files in the project
+      type: "pages"
+    values:
+      layout: "default"
 
 
 # Enable or disable the site search
