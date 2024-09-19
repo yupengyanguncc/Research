@@ -1,2 +1,5 @@
 Yupeng:
   name: Yupeng Yang
+plugins:
+  - jemoji
+  - jekyll-katex
