@@ -119,6 +119,3 @@ $$y(t)\rightarrow0$$, the decrease rate of $$y(t)$$s, (i.e., $$\frac{d}{dt}y(t)\
 
 Therefore, if we can get if the change rate of $$h(\mathbf{x}(t))$$ is always larger than the change rate of $$y(t)$$, we can ensure that $$h(\mathbf{x}(t))\geq0$$ for all $$t\geq0$$.
 That means the decrease speed is lower than the decrease speed of $$y(t)$$. With this, we can get easily conclude the conclusion.
-
-
-love
