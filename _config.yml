@@ -56,3 +56,8 @@ nav_enabled: true
 
 Yupeng:
   name: Yupeng Yang
+
+Quote:
+  warning:
+    title: Warning
+    color: blue

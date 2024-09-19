@@ -9,8 +9,8 @@ math: kate
 ---
 
 # Control Barrier Function Auxiliary Function Visualization 
-Working
-{: .label .label-green}
+Finished
+{: .label .label-red}
 
 {: .note }
 The following code is used to visualize the exponential decay of the auxiliary function in the Control Barrier Function. 
