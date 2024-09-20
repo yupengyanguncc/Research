@@ -11,10 +11,10 @@ emoji: jemoji
 
 # Control Barrier Function
 
-Finished 
+Finished :sunglasses:
 {: .label .label-red }
 
-Consider a contol-affine dynamical system defined as:
+Consider a control-affine dynamical system defined as:
 
 $$
 \dot{\mathbf{x}} = f(\mathbf{x}) + g(\mathbf{x})u
@@ -109,7 +109,7 @@ plt.show()
 <img src="../../../assets/image/exponential_decay.gif" alt="Function decay" width="300">
 </div>
 
-[See implementation for Gif](../../../code/cbf.html)
+[See implementation for Gif](../../code/cbf.html)
 
 Then, we can get the following equation:
 **Definition 1 (Class-$$\mathcal{K}$$ funciton):**

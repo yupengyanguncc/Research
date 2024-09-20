@@ -7,7 +7,6 @@ url: https://just-the-docs.github.io
 
 plugins:
   - jemoji
-  - jekyll-katex
 
 defaults:
   - scope:

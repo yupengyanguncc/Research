@@ -8,5 +8,3 @@ gem "just-the-docs", "0.10.0" # pinned to the current release
 
 
 gem 'jemoji'
-
-gem 'jekyll-katex'
