@@ -24,7 +24,7 @@ where $$\mathbf{x}\in\mathcal{X}\sub\mathbb{R}^{d}$$, $$\mathbf{u}\in\mathcal{U}
 $$f:\mathbb{R}^{d} \mapsto \mathbb{R}^{d}$$ and $$g\!:\!\mathbb{R}^{d}\!\mapsto\!\mathbb{R}^{d\times q}$$ are locally Lipschitz continuous.
 
 <a id="theorem-1"></a> 
-## Theorem 
+## Theorem Control Barrier Function
 (Safety) Considering the safety radius $$R_\mathrm{s}\in\mathbb{R}$$, if we want to ensure that the robots $$i$$ and $$j$$ are not collide with each other, we can define such set as:
 
 $$
