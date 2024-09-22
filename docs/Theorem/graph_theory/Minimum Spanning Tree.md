@@ -2,7 +2,7 @@
 title: Minimum Spanning Tree
 parent: Theorem
 author: Yupeng
-date: 2024-09-17
+date: 2024-09-18
 layout: default
 nav_order: 2.4
 math: katex

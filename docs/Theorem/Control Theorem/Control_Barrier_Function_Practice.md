@@ -2,7 +2,7 @@
 title: Control Barrier Function Practice
 parent: Theorem
 author: Yupeng
-date: 2024-09-17
+date: 2024-09-19
 layout: default
 nav_order: 2.1
 math: katex
@@ -69,7 +69,7 @@ $$
 This can be solved using any QP solver. Here is the results:
 
 <div align="center">
-<img src="../../../assets/image/cbf_robot_2d.gif" alt="CBF Example." width="700">
+<img src="../../../assets/image/cbf_robot_2d.gif" alt="CBF Example." width="700" title="Example Gif.">
 </div>
 
 This is cool :hugs: Right? It is very easy to develop with theorectical guarantee.
