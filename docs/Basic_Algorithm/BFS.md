@@ -38,7 +38,7 @@ BFS(G, s):
 The animation below is generated with Manim. It shows BFS expanding a queue and colouring vertices/edges in the order they are discovered.
 
 <div align="center">
-<img src="../../assets/image/bfs.gif" alt="BFS Example" width="700" title="Example Video.">
+<img src="../../assets/image/BFS.gif" alt="BFS Example" width="700" title="Example Video.">
 </div>
 
 Plus 🛠️:
