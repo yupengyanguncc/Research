@@ -4,4 +4,5 @@ layout: default
 nav_order: 1
 ---
 
-Record of my learning journey in my Ph.D. 
+Record of my learning journey in my Ph.D.  This is my peaceful playground :relaxed:
+
