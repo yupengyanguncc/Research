@@ -11,7 +11,7 @@ emoji: jemoji
 
 # DFS
 
-# Depth‑First Search (BFS)
+# Depth‑First Search (DFS)
 Finished :sunglasses:
 {: .label .label-red }
 
@@ -46,4 +46,4 @@ The animation below is generated with Manim. It shows DFS expanding a queue and
 <img src="../../assets/image/DFS.gif" alt="BFS Example" width="700" title="Example Video.">
 </div>
 
-[Check Source Code for Visualization](../code/DFS_visualization))
+[Check Source Code for Visualization](../code/DFS_visualization.html))

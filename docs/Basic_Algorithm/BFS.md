@@ -10,12 +10,15 @@ emoji: jemoji
 ---
 
 # Breadth First Search (BFS)
+Finished :sunglasses:
+{: .label .label-red }
 
-## What is BFS
+## What is BFS :thinking:
 
 Breadth‑First Search (BFS) is a graph‑traversal algorithm that explores a graph level by level. Starting from a source vertex, it first visits all immediate neighbours (distance 1), then all vertices at distance 2, and so on until every reachable vertex has been discovered.
 
-### 1.1 Algorithm (pseudocode)
+### Algorithm (pseudocode) :grin:
+So the key idea is First in first out (FIFO)
 
 ```julia
 
@@ -34,7 +37,7 @@ BFS(G, s):
 **Space complexity**: $$\mathcal{O}(|\mathcal{V}|)$$ (It uses a queue to keep track of the vertices that need to be visited.)
 **Usage** - shortest path in unweighted graphs, connectivity checks, level ordering, bipartite testing, etc.
 
-## Visualization
+## Visualization :look:
 The animation below is generated with Manim. It shows BFS expanding a queue and colouring vertices/edges in the order they are discovered.
 
 <div align="center">
