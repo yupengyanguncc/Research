@@ -43,7 +43,7 @@ By defining the safety set, we can ensure that the robot is always at most 5 uni
 
 ## Control Barrier Function
 
-Following the definition of Control Barrier Function (refer to [Theorem Control Barrier Function](/docs/docs/Theorem/Control%20Theorem/Control_Barrier_Function.html#theorem-1)), we can define such constraints as:
+Following the definition of Control Barrier Function (refer to [Theorem Control Barrier Function](../Theorem/Control%20Theorem/Control_Barrier_Function.html#theorem-1)), we can define such constraints as:
 
 \begin{equation}
 \dot{h}(\mathbf{x}, \mathbf{u}) = \nabla h(\mathbf{x}) \cdot \mathbf{u} \geq -\kappa(h(\mathbf{x}))
