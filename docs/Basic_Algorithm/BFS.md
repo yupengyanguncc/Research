@@ -1,5 +1,5 @@
 ---
-title: Breadth First Search (BFS)
+title: Breadth-First Search (BFS)
 parent: Basic Algorithm
 author: Yupeng
 date: 2025-05-25
