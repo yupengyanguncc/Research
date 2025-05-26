@@ -10,6 +10,7 @@ emoji: jemoji
 ---
 
 # Breadth First Search (BFS)
+
 Finished :sunglasses:
 {: .label .label-red }
 
@@ -44,6 +45,4 @@ The animation below is generated with Manim. It shows BFS expanding a queue and
 <img src="../../assets/image/BFS.gif" alt="BFS Example" width="700" title="Example Video.">
 </div>
 
-Plus 🛠️:
-
-You can also add the list veiw of each round for example the neighbour and not visting list vs. visiting list.
+[Check Source Code for Visualization](../code/BFS_visualization.html)

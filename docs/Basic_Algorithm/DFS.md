@@ -9,8 +9,6 @@ math: katex
 emoji: jemoji
 ---
 
-# DFS
-
 # Depth‑First Search (DFS)
 Finished :sunglasses:
 {: .label .label-red }
@@ -21,6 +19,8 @@ Finished :sunglasses:
 Depth‑First Search (DFS) is a graph‑traversal algorithm that explores as far as possible along each branch before backtracking.
 
 ### Algorithm (pseudocode) :grin:
+
+So the key idea is last in first out (LIFO)
 
 ```julia
 
@@ -43,7 +43,7 @@ DFS(G, s):
 The animation below is generated with Manim. It shows DFS expanding a queue and colouring vertices/edges in the order they are discovered.
 
 <div align="center">
-<img src="../../assets/image/DFS.gif" alt="BFS Example" width="700" title="Example Video.">
+<img src="../../assets/image/DFS.gif" alt="DFS Example" width="700" title="Example Video.">
 </div>
 
-[Check Source Code for Visualization](../code/DFS_visualization.html))
+[Check Source Code for Visualization](../code/DFS_visualization.html)
