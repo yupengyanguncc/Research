@@ -1,9 +1,10 @@
 ---
-title: Books
+title: Basic Algorithm
 author: Yupeng
-date: 2024-09-17
+date: 2025-05-25
 layout: default
-nav_order: 4.0
+nav_order: 4.6
 math: katex
 emoji: jemoji
 ---
+
