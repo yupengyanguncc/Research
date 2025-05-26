@@ -1,5 +1,5 @@
 ---
-title: Depth‑First Search (BFS)
+title: Depth‑First Search (DFS)
 parent: Basic Algorithm
 author: Yupeng
 date: 2025-05-26
