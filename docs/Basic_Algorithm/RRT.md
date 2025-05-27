@@ -30,7 +30,7 @@ Key features of RRT:
 The following animation demonstrates the RRT algorithm in a 2D environment with obstacles. The green circle marks the start position, and the red star marks the goal. The tree expands by exploring the free space, avoiding obstacles, and eventually finding a path to the goal.
 
 <div align="center">
-  <img src="../../assets/image/rrt_animation_20250527_005937.gif" alt="RRT Path Planning Animation" width="500">
+  <img src="../../assets/image/rrt_animation_20250527_025012.gif" alt="RRT Path Planning Animation" width="500">
 </div>
 
 After the algorithm completes, the final result shows all explored nodes, collision points, and the successful path from start to goal:
