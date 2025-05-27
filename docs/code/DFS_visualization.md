@@ -9,6 +9,7 @@ math: katex
 emoji: jemoji
 ---
 
+This is the code using [manim](https://www.manim.community/plugin/manim-onlinetex/), which is one of my favorite algorithm visualization library :grin:. I am still wokring on familar with it.
 
 ```julia
 %%manim -qm DFSVisualization
