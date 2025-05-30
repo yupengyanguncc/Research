@@ -9,7 +9,7 @@ math: katex
 emoji: jemoji
 ---
 
-# Hash Functions 
+# Advanced Hash Functions 
 
 ## 1. Properties of Good Hash Functions
 
