@@ -35,81 +35,29 @@ A hash table is like an intelligent library system:
 
 ### 2.1 Hash Function
 
-A hash function converts input of arbitrary size to a fixed-size output (usually an integer). For example:
+A hash function converts input of arbitrary size to a fixed-size output (usually an integer). For example: 
 
 ```python
+# Python Implementation
 def simple_hash(key, size):
     return sum(ord(c) for c in str(key)) % size
 ```
 
-Let's break down how this simple hash function works:
+```java
+// Java Implementation
+public static int simpleHash(Object key, int size) {
+    String strKey = key.toString();
+    int sum = 0;
+    for (int i = 0; i < strKey.length(); i++) {
+        sum += (int) strKey.charAt(i);
+    }
+    return sum % size;
+}
+```
 
-1. **Step-by-Step Example**:
-   Let's calculate the hash value for the string "Hello" with size = 10:
-   ```
-   Input: key = "Hello", size = 10
-   
-   Step 1: Convert each character to its ASCII value
-   'H' -> ord('H') = 72
-   'e' -> ord('e') = 101
-   'l' -> ord('l') = 108
-   'l' -> ord('l') = 108
-   'o' -> ord('o') = 111
-   
-   Step 2: Sum all ASCII values
-   72 + 101 + 108 + 108 + 111 = 500
-   
-   Step 3: Take modulo with size
-   500 % 10 = 0
-   
-   Final result: simple_hash("Hello", 10) = 0
-   ```
 
-2. **More Examples**:
-   ```python
-   # Example 1: Different strings
-   print(simple_hash("Hello", 10))    # 0
-   print(simple_hash("World", 10))    # 5
-   print(simple_hash("Python", 10))   # 8
-   
-   # Example 2: Same string, different size
-   print(simple_hash("Hello", 5))     # 0
-   print(simple_hash("Hello", 7))     # 3
-   print(simple_hash("Hello", 13))    # 6
-   
-   # Example 3: Numbers (converted to strings)
-   print(simple_hash(123, 10))        # 6
-   print(simple_hash("123", 10))      # 6
-   ```
+This is the [ASCII Table](https://www.ascii-code.com/). We will introduce the Hash Function in detail [here](Hash_function.html).
 
-3. **Properties of this Hash Function**:
-   - **Deterministic**: Same input always produces same output
-   - **Uniform Distribution**: Not guaranteed
-   - **Collision Prone**: Different inputs can produce same output
-   - **Example of Collision**:
-     ```python
-     # These different strings produce the same hash value
-     print(simple_hash("ab", 10))     # 3
-     print(simple_hash("ba", 10))     # 3
-     ```
-
-4. **Limitations**:
-   - Not cryptographically secure
-   - Prone to collisions
-   - Distribution depends on input patterns
-   - ASCII sum can overflow for long strings
-
-5. **When to Use**:
-   - Simple applications
-   - Small datasets
-   - Non-critical systems
-   - Learning purposes
-
-6. **When Not to Use**:
-   - Security applications
-   - Large datasets
-   - Systems requiring uniform distribution
-   - Applications sensitive to collisions
 
 ### 2.2 Storage Process
 
@@ -119,242 +67,16 @@ Let's break down how this simple hash function works:
 
 ![Hash Table Search Process](../../assets/image/hash_table_search_process.png)
 
-## 3. Hash Functions in Detail
 
-### 3.1 Properties of Good Hash Functions
+## 3. Collision Handling
 
-A good hash function should have the following properties:
-
-- **Deterministic**: Same input always produces the same output
-- **Uniform Distribution**: Outputs should be evenly distributed across the range
-- **Avalanche Effect**: Small changes in input should cause large changes in output
-- **Efficiency**: Should be computationally efficient
-
-### 3.2 Common Hash Functions
-
-#### 3.2.1 MD5 (Message-Digest Algorithm 5)
-- Output length: 128 bits (16 bytes)
-- Mathematical expression: $$ H(x) = f(x) \mod 2^{128} $$
-- **Detailed Process**:
-  1. **Padding**: 
-     - Append a single '1' bit
-     - Append '0' bits until length is 448 bits (mod 512)
-     - Append 64-bit original length
-  2. **Initialize Variables**:
-     ```
-     A = 0x67452301
-     B = 0xefcdab89
-     C = 0x98badcfe
-     D = 0x10325476
-     ```
-  3. **Main Loop**:
-     - Process data in 512-bit blocks
-     - 64 rounds of operations
-     - Each round uses different bit operations and constants
-
-- **Step-by-Step Example**:
-  Let's calculate MD5 for the string "Hello":
-  1. **Convert to bytes**:
-     ```
-     "Hello" -> [72, 101, 108, 108, 111]
-     Binary: 01001000 01100101 01101100 01101100 01101111
-     ```
-  2. **Add padding**:
-     ```
-     Original length: 40 bits
-     Add '1' bit: 01001000 01100101 01101100 01101100 01101111 1
-     Add '0' bits until 448 bits: ...0000
-     Add length (40 bits): ...00101000
-     ```
-  3. **Process in blocks**:
-     ```
-     Block 1: [72, 101, 108, 108, 111, 128, 0, 0, ..., 40]
-     ```
-  4. **Final result**:
-     ```
-     MD5("Hello") = 8b1a9953c4611296a827abf8c47804d7
-     ```
-
-- **Example with Different Inputs**:
-  ```python
-  import hashlib
-  
-  # Same input always gives same output
-  text1 = "Hello"
-  text2 = "Hello"
-  print(hashlib.md5(text1.encode()).hexdigest())  # 8b1a9953c4611296a827abf8c47804d7
-  print(hashlib.md5(text2.encode()).hexdigest())  # 8b1a9953c4611296a827abf8c47804d7
-  
-  # Small change in input causes big change in output
-  text3 = "Hello!"
-  print(hashlib.md5(text3.encode()).hexdigest())  # f7ff9e8b7bb2e09b70935a5d785e0cc5d9d0abf0
-  ```
-
-#### 3.2.2 SHA-256 (Secure Hash Algorithm 256)
-- Output length: 256 bits (32 bytes)
-- Mathematical expression: $$ H(x) = f(x) \mod 2^{256} $$
-- **Detailed Process**:
-  1. **Padding**:
-     - Similar to MD5 but with 512-bit block size
-     - More complex padding rules
-  2. **Initialize Variables**:
-     ```
-     h0 = 0x6a09e667
-     h1 = 0xbb67ae85
-     h2 = 0x3c6ef372
-     h3 = 0xa54ff53a
-     h4 = 0x510e527f
-     h5 = 0x9b05688c
-     h6 = 0x1f83d9ab
-     h7 = 0x5be0cd19
-     ```
-  3. **Main Loop**:
-     - 64 rounds of operations
-     - More complex bit operations than MD5
-     - Uses different constants for each round
-
-- **Step-by-Step Example**:
-  Let's calculate SHA-256 for the string "Hello":
-  1. **Convert to bytes**:
-     ```
-     "Hello" -> [72, 101, 108, 108, 111]
-     Binary: 01001000 01100101 01101100 01101100 01101111
-     ```
-  2. **Add padding**:
-     ```
-     Original length: 40 bits
-     Add '1' bit: 01001000 01100101 01101100 01101100 01101111 1
-     Add '0' bits until 448 bits: ...0000
-     Add length (40 bits): ...00101000
-     ```
-  3. **Process in blocks**:
-     ```
-     Block 1: [72, 101, 108, 108, 111, 128, 0, 0, ..., 40]
-     ```
-  4. **Final result**:
-     ```
-     SHA-256("Hello") = 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
-     ```
-
-- **Example with Different Inputs**:
-  ```python
-  import hashlib
-  
-  # Same input always gives same output
-  text1 = "Hello"
-  text2 = "Hello"
-  print(hashlib.sha256(text1.encode()).hexdigest())
-  # 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
-  print(hashlib.sha256(text2.encode()).hexdigest())
-  # 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
-  
-  # Small change in input causes big change in output
-  text3 = "Hello!"
-  print(hashlib.sha256(text3.encode()).hexdigest())
-  # 334d016f755cd6dc58c53a86e183882f8ec14f52fb05345887c8a5edd42c87b7
-  ```
-
-#### 3.2.3 MurmurHash
-- Output length: 32 or 64 bits
-- Mathematical expression: $$ H(x) = (x \cdot c_1) \oplus ((x \cdot c_1) \gg r_1) $$
-- **Detailed Process**:
-  1. **Key Mixing**:
-     - Multiply key by a constant
-     - Rotate the result
-     - XOR with the result
-  2. **Final Mixing**:
-     - Additional mixing steps
-     - Final XOR operations
-
-- **Step-by-Step Example**:
-  Let's calculate MurmurHash3 for the string "Hello":
-  1. **Convert to bytes**:
-     ```
-     "Hello" -> [72, 101, 108, 108, 111]
-     ```
-  2. **Process in 4-byte blocks**:
-     ```
-     Block 1: [72, 101, 108, 108] -> 0x48656c6c
-     Block 2: [111, 0, 0, 0] -> 0x6f000000
-     ```
-  3. **Apply mixing function**:
-     ```
-     k1 = 0x48656c6c
-     k1 *= 0xcc9e2d51
-     k1 = (k1 << 15) | (k1 >> 17)
-     k1 *= 0x1b873593
-     ```
-  4. **Final result**:
-     ```
-     MurmurHash3("Hello") = 316307400
-     ```
-
-- **Example with Different Inputs**:
-  ```python
-  import mmh3
-  
-  # Same input always gives same output
-  text1 = "Hello"
-  text2 = "Hello"
-  print(mmh3.hash(text1))  # 316307400
-  print(mmh3.hash(text2))  # 316307400
-  
-  # Small change in input causes different output
-  text3 = "Hello!"
-  print(mmh3.hash(text3))  # -1327161286
-  ```
-
-### 3.3 Hash Function Comparison
-
-#### 3.3.1 Distribution Analysis
-The following visualization shows the distribution of hash values for different algorithms:
-
-![Hash Distribution Comparison](../../assets/image/hash_functions_comparison.png)
-
-- **MD5**: Shows good distribution but with some clustering
-- **SHA-256**: Exhibits excellent uniform distribution
-- **MurmurHash**: Shows good distribution for non-cryptographic use
-
-#### 3.3.2 Performance Comparison
-
-| Metric | MD5 | SHA-256 | MurmurHash |
-|--------|-----|----------|------------|
-| Speed | Fast | Slow | Very Fast |
-| Security | Low | High | Low |
-| Memory Usage | Low | High | Low |
-| Collision Resistance | Weak | Strong | Moderate |
-
-#### 3.3.3 Use Case Recommendations
-
-1. **Security Applications**:
-   - Use SHA-256 for:
-     - Password hashing
-     - Digital signatures
-     - Blockchain
-     - File integrity verification
-
-2. **General Purpose**:
-   - Use MD5 for:
-     - File checksums
-     - Non-critical data deduplication
-     - Quick data validation
-
-3. **High Performance**:
-   - Use MurmurHash for:
-     - Hash tables
-     - Bloom filters
-     - Cache keys
-     - Load balancing
-
-## 4. Collision Handling
-
-### 4.1 What is a Hash Collision?
+### 3.1 What is a Hash Collision?
 
 A collision occurs when two different keys map to the same index through the hash function.
 
 ![Hash Collision Illustration](../../assets/image/hash_table_collision.png)
 
-### 4.2 Methods to Handle Collisions
+### 3.2 Methods to Handle Collisions
 
 1. **Separate Chaining**
    - Uses linked lists to store colliding elements
@@ -365,9 +87,112 @@ A collision occurs when two different keys map to the same index through the has
    - Quadratic Probing
    - Double Hashing
 
-## 5. Performance Analysis
+## 4. Performance Analysis
 
-### 5.1 Time Complexity
+### 4.1 Properties of Good Hash Functions
+
+A good hash function should have the following properties:
+
+- **Deterministic**: Same input always produces the same output
+- **Uniform Distribution**: Outputs should be evenly distributed across the range
+- **Avalanche Effect**: Small changes in input should cause large changes in output
+- **Efficiency**: Should be computationally efficient
+
+### 4.2 Why Hash Function Properties Matter
+
+#### Deterministic
+A hash function must be deterministic so that the same key always maps to the same slot. If not, you would not be able to reliably find or update data in the hash table.
+
+**Example (What goes wrong if not deterministic):**
+
+Suppose we use a bad hash function that returns a random slot each time:
+
+```python
+import random
+
+def bad_hash(key, size):
+    return random.randint(0, size-1)  # Not deterministic!
+
+size = 10
+hash_table = [[] for _ in range(size)]
+
+# Insert a key-value pair
+key = "apple"
+value = 1
+slot = bad_hash(key, size)
+hash_table[slot].append((key, value))
+
+# Try to search for the same key
+search_slot = bad_hash(key, size)
+found = any(k == key for k, v in hash_table[search_slot])
+print("Found?", found)  # Most likely False!
+```
+
+```java
+import java.util.*;
+
+public class BadHashDemo {
+    public static int badHash(String key, int size) {
+        Random rand = new Random();
+        return rand.nextInt(size); // Not deterministic!
+    }
+
+    public static void main(String[] args) {
+        int size = 10;
+        List<List<Map.Entry<String, Integer>>> hashTable = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            hashTable.add(new ArrayList<>());
+        }
+
+        // Insert a key-value pair
+        String key = "apple";
+        int value = 1;
+        int slot = badHash(key, size);
+        hashTable.get(slot).add(new AbstractMap.SimpleEntry<>(key, value));
+
+        // Try to search for the same key
+        int searchSlot = badHash(key, size);
+        boolean found = false;
+        for (Map.Entry<String, Integer> entry : hashTable.get(searchSlot)) {
+            if (entry.getKey().equals(key)) {
+                found = true;
+                break;
+            }
+        }
+        System.out.println("Found? " + found); // Most likely false!
+    }
+}
+```
+
+A visualization of the failuare case is provided in ![Separate Chaining Illustration](../../assets/image/bad_hash_search_result.png)
+
+**Explanation:**
+- When inserting, the key "apple" is placed in a random slot.
+- When searching, "apple" is looked up in a different random slot, so the search almost always fails.
+- This demonstrates that a non-deterministic hash function makes the hash table unusable.
+
+#### Uniform Distribution
+Uniform distribution ensures that hash values are spread evenly across all slots. This minimizes collisions (multiple keys mapping to the same slot), which is crucial for maintaining fast lookup, insertion, and deletion times.
+
+If a hash function is not uniform, some slots will be crowded (many keys), while others are empty. This leads to more collisions and degrades performance.
+
+Here is the visualization for the Uniform Distribution: [image](../../assets/image/hash_slot_distribution.png)
+
+
+
+**Example:**
+Suppose you have 10 slots and 1000 elements. Ideally, each slot has 100 elements. If you use separate chaining (linked lists in each slot), the average number of comparisons to find an existing element is about 100/2 = 50 (since on average, the element is in the middle of the list). If the distribution is uneven, some slots may have 300 elements, and searching in those slots could take up to 150 comparisons on average, making the hash table much slower.
+
+**Tips:**
+- For a slot with $$n$$ elements (using chaining):
+    - Average comparisons for a successful search: $$n/2$$
+
+**Summary:**
+- Determinism guarantees correctness.
+- Uniform distribution guarantees efficiency.
+
+
+### 4.3 Time Complexity
 
 | Operation | Average Case | Worst Case |
 |-----------|--------------|------------|
@@ -375,10 +200,10 @@ A collision occurs when two different keys map to the same index through the has
 | Insert    | O(1)         | O(n)       |
 | Delete    | O(1)         | O(n)       |
 
-### 5.2 Space Complexity
+### 4.4 Space Complexity
 - Space Complexity: O(n), where n is the number of stored elements
 
-## 6. Applications
+## 5. Applications
 
 1. **Database Indexing**
 2. **Cache Systems**
@@ -386,9 +211,9 @@ A collision occurs when two different keys map to the same index through the has
 4. **Compiler Symbol Tables**
 5. **Routing Tables**
 
-## 7. Code Examples
+## 6. Code Examples
 
-### 7.1 Python Implementation
+### 6.1 Implementation
 
 ```python
 class HashTable:
@@ -411,12 +236,11 @@ class HashTable:
         return None
 ```
 
-### 7.2 Java Implementation
-
 ```java
+// Java Implementation
 import java.util.LinkedList;
 
-public class HashTable<K, V> {
+class HashTable<K, V> {
     private class Entry {
         K key;
         V value;
@@ -437,39 +261,28 @@ public class HashTable<K, V> {
         }
     }
 
-    private int hash(K key) {
+    private int hashFunction(K key) {
         return Math.abs(key.hashCode()) % size;
     }
 
-    public void put(K key, V value) {
-        int idx = hash(key);
-        for (Entry entry : table[idx]) {
-            if (entry.key.equals(key)) {
-                entry.value = value;
-                return;
-            }
-        }
-        table[idx].add(new Entry(key, value));
+    public void insert(K key, V value) {
+        int index = hashFunction(key);
+        table[index].add(new Entry(key, value));
     }
 
-    public V get(K key) {
-        int idx = hash(key);
-        for (Entry entry : table[idx]) {
+    public V search(K key) {
+        int index = hashFunction(key);
+        for (Entry entry : table[index]) {
             if (entry.key.equals(key)) {
                 return entry.value;
             }
         }
         return null;
     }
-
-    public boolean remove(K key) {
-        int idx = hash(key);
-        return table[idx].removeIf(entry -> entry.key.equals(key));
-    }
 }
 ```
 
-### 7.3 Usage Example (Python)
+### 6.3 Usage Example 
 
 ```python
 # Create hash table
@@ -485,24 +298,23 @@ print(ht.search("apple"))  # Output: 1
 print(ht.search("banana")) # Output: 2
 ```
 
-### 7.4 Usage Example (Java)
-
 ```java
+// Usage Example (Java)
 public class Main {
     public static void main(String[] args) {
         HashTable<String, Integer> ht = new HashTable<>(10);
-        ht.put("apple", 1);
-        ht.put("banana", 2);
-        ht.put("orange", 3);
+        ht.insert("apple", 1);
+        ht.insert("banana", 2);
+        ht.insert("orange", 3);
 
-        System.out.println(ht.get("apple"));   // Output: 1
-        System.out.println(ht.get("banana"));  // Output: 2
-        System.out.println(ht.get("grape"));   // Output: null
+        System.out.println(ht.search("apple"));   // Output: 1
+        System.out.println(ht.search("banana"));  // Output: 2
+        System.out.println(ht.search("grape"));   // Output: null
     }
 }
 ```
 
-## 8. Best Practices
+## 7. Best Practices
 
 1. **Choose Appropriate Hash Function**
    - Uniform distribution
@@ -517,7 +329,7 @@ public class Main {
    - Choose collision handling method based on requirements
    - Monitor collision rate
 
-## 9. Common Questions
+## 8. Common Questions
 
 1. **How to Choose a Hash Function?**
    - Consider data characteristics
@@ -533,3 +345,9 @@ public class Main {
    - Use appropriate collision handling method
    - Regularly clean up unused data
    - Monitor performance metrics 
+
+## 9. References
+
+- Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein. "Introduction to Algorithms", 3rd Edition, MIT Press, Chapter 11.
+- Wikipedia contributors, "Hash table", Wikipedia, The Free Encyclopedia. [Link](https://en.wikipedia.org/wiki/Hash_table)
+- Donald E. Knuth, "The Art of Computer Programming, Volume 3: Sorting and Searching", Addison-Wesley. 
