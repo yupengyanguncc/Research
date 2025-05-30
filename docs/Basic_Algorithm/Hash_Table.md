@@ -274,7 +274,7 @@ Suppose `hash('Alice') = 123456789`, `hash2('Alice') = 5`, table size `S = 8`
 - If slot 3 is full, try `(123456789 + 3*5) % 8 = 0`
 - ... and so on.
 
-### Comparison of Open Addressing Methods
+### Comparison of Closed Hashing Methods
 
 | Feature                | Linear Probing                                   | Quadratic Probing                                 | Double Hashing                                   |
 |------------------------|--------------------------------------------------|---------------------------------------------------|--------------------------------------------------|
@@ -289,7 +289,7 @@ Suppose `hash('Alice') = 123456789`, `hash2('Alice') = 5`, table size `S = 8`
 **Summary:**
 - **Linear Probing**: Simple, fast, best cache performance, but can suffer from clustering.
 - **Quadratic Probing**: Reduces clustering, but may not always find an empty slot if the table is nearly full or S is not prime.
-- **Double Hashing**: Best distribution, avoids clustering, but is more complex and has higher computation cost.
+- **Double Hashing**: Best distribution, avoids clustering, but is more complex and has higher computation cost.  [Reference](https://www.geeksforgeeks.org/open-addressing-collision-handling-technique-in-hashing/)
 
 
 

@@ -1,5 +1,5 @@
 ---
-title: Hash Functions in Detail
+title: Advanced Hash Functions 
 parent: Basic Algorithm
 author: Yupeng
 date: 2025-05-29
