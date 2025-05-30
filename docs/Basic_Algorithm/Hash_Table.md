@@ -77,10 +77,12 @@ Example: if we want to have an array that records how manu times each word apper
 ### 1.1 What is a Hash Table?
 Formal Definition
 A hash table is a data structure that implements an associative array, mapping keys to values, using a hash function.
+
 Let
-$$ HT $$ be a table (array) of size $$ n $$
-$$ K $$ be the set of possible keys
-$$ V $$ be the set of possible values
+- $$ HT $$ be a table (array) of size $$ n $$
+- $$ K $$ be the set of possible keys
+- $$ V $$ be the set of possible values
+
 A hash table is a mapping:
 $$
 HT: K \rightarrow V
@@ -93,11 +95,14 @@ such that for each key $$ k \in K $$, the value $$ v $$ (called a **record**) is
 $$
 HT[h(k)] = v
 $$
+
 Requirements for the hash function $$ h $$:
 $$ h $$ should be efficient to compute (no table search).
-Ideally, for any two different keys $$ k_1 \neq k_2 $$, $$ h(k_1) \neq h(k_2) $$ (i.e., no collisions).
-In practice, collisions may occur, so collision resolution strategies are needed.
+- Ideally, for any two different keys $$ k_1 \neq k_2 $$, $$ h(k_1) \neq h(k_2) $$ (i.e., no collisions).
+- In practice, collisions may occur, so collision resolution strategies are needed.
+  
 Example:
+
 If $$ h(\text{"hello"}) = 3 $$ and $$ h(\text{"bye"}) = 3 $$, then inserting both would cause a collision at index 3, and one value would override the other unless handled properly.
 
 In another word:
@@ -200,6 +205,94 @@ A collision occurs when two different keys map to the same index through the has
    - Linear Probing
    - Quadratic Probing
    - Double Hashing
+
+#### Linear Probing Visualization
+
+![Linear Probing Example](../../assets/image/hash_table_linear_probing.png)
+
+#### What is Linear Probing?
+
+Linear probing is a collision resolution technique in closed hashing (open addressing).
+When a collision occurs (i.e., the slot `hash(key) % size` is already occupied), linear probing checks the next slot in sequence:
+- `(hash(key) + 1) % size`
+- `(hash(key) + 2) % size`
+- ...
+until an empty slot is found.
+
+**Example:**
+Suppose `hash('Alice') = 123456789`, table size `S = 8`
+- First try: `123456789 % 8 = 5`
+- If slot 5 is full, try `(123456789 + 1) % 8 = 6`
+- If slot 6 is full, try `(123456789 + 2) % 8 = 7`
+- ... and so on.
+
+#### Quadratic Probing Visualization
+
+![Quadratic Probing Example](../../assets/image/hash_table_quadratic_probing.png)
+
+#### What is Quadratic Probing?
+
+Quadratic probing is a collision resolution technique in closed hashing (open addressing).
+When a collision occurs (i.e., the slot `hash(key) % size` is already occupied), quadratic probing checks the next slot in sequence:
+- `(hash(key) + 1*1) % size`
+- `(hash(key) + 2*2) % size`
+- `(hash(key) + 3*3) % size`
+- ...
+until an empty slot is found.
+
+**Example:**
+Suppose `hash('Alice') = 123456789`, table size `S = 8`
+- First try: `123456789 % 8 = 5`
+- If slot 5 is full, try `(123456789 + 1*1) % 8 = 6`
+- If slot 6 is full, try `(123456789 + 2*2) % 8 = 1`
+- If slot 1 is full, try `(123456789 + 3*3) % 8 = 2`
+- ... and so on.
+
+#### Double Hashing
+
+#### Double Hashing Visualization
+
+![Double Hashing Example](../../assets/image/hash_table_double_hashing.png)
+
+#### What is Double Hashing?
+
+Double hashing is a collision resolution technique in closed hashing (open addressing).
+When a collision occurs (i.e., the slot `hash(key) % size` is already occupied), double hashing checks the next slot in sequence:
+- `(hash(key) + 1*hash2(key)) % size`
+- `(hash(key) + 2*hash2(key)) % size`
+- `(hash(key) + 3*hash2(key)) % size`
+- ...
+until an empty slot is found.
+
+Here, `hash2(key)` is a second hash function that must return a value coprime with the table size.
+
+**Example:**
+Suppose `hash('Alice') = 123456789`, `hash2('Alice') = 5`, table size `S = 8`
+- First try: `123456789 % 8 = 5`
+- If slot 5 is full, try `(123456789 + 1*5) % 8 = 6`
+- If slot 6 is full, try `(123456789 + 2*5) % 8 = 3`
+- If slot 3 is full, try `(123456789 + 3*5) % 8 = 0`
+- ... and so on.
+
+### Comparison of Open Addressing Methods
+
+| Feature                | Linear Probing                                   | Quadratic Probing                                 | Double Hashing                                   |
+|------------------------|--------------------------------------------------|---------------------------------------------------|--------------------------------------------------|
+| **Probe Sequence**     | `(hash(x) + i) % S`                              | `(hash(x) + i*i) % S`                             | `(hash(x) + i*hash2(x)) % S`                     |
+| **Cache Performance**  | Best (slots are contiguous in memory)            | Medium (slots are more spaced out)                | Poor (slots are scattered)                       |
+| **Clustering**         | Suffers from primary clustering                  | Reduces primary, but can have secondary clustering| No clustering (if hash2 and S are coprime)       |
+| **Computation Cost**   | Low (simple arithmetic)                          | Low-Medium (simple arithmetic)                    | High (two hash functions per probe)              |
+| **Implementation**     | Easiest                                          | Easy                                              | Most complex                                     |
+| **Slot Coverage**      | Always checks all slots                          | May not check all slots unless S is prime         | Checks all slots if hash2 and S are coprime      |
+| **When to Use**        | When simplicity and speed are most important     | When you want to reduce clustering                | When you want best distribution, can afford cost |
+
+**Summary:**
+- **Linear Probing**: Simple, fast, best cache performance, but can suffer from clustering.
+- **Quadratic Probing**: Reduces clustering, but may not always find an empty slot if the table is nearly full or S is not prime.
+- **Double Hashing**: Best distribution, avoids clustering, but is more complex and has higher computation cost.
+
+
+
 
 ## 4. Performance Analysis
 

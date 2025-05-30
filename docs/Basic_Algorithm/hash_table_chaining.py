@@ -2,6 +2,14 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, FancyArrowPatch, Ellipse
 import os
 
+# This code creates a visualization of a hash table using separate chaining
+# It shows how collisions are handled by storing multiple key-value pairs in a linked list
+# The visualization includes:
+# - Keys being hashed
+# - Hash function process
+# - Hash table with indices
+# - Linked chains for collision resolution
+
 # 数据
 keys = ["Yupeng", "Yiru", "Love", "Rainy"]
 values = ["323-3323", "123-1234", "231-3321", "333-3212"]
