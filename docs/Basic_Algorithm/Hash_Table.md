@@ -56,7 +56,7 @@ public static int simpleHash(Object key, int size) {
 ```
 
 
-This is the [ASCII Table](https://www.ascii-code.com/). We will introduce the Hash Function in detail [here](Hash_function.html).
+This is the [ASCII Table](https://www.ascii-code.com/). We will introduce the Hash Function in detail [here](Hash_Function.html).
 
 
 ### 2.2 Storage Process
@@ -100,7 +100,7 @@ A good hash function should have the following properties:
 
 ### 4.2 Why Hash Function Properties Matter
 
-#### Deterministic
+#### **Deterministic**
 A hash function must be deterministic so that the same key always maps to the same slot. If not, you would not be able to reliably find or update data in the hash table.
 
 **Example (What goes wrong if not deterministic):**
@@ -171,12 +171,13 @@ A visualization of the failuare case is provided in ![Separate Chaining Illustra
 - When searching, "apple" is looked up in a different random slot, so the search almost always fails.
 - This demonstrates that a non-deterministic hash function makes the hash table unusable.
 
-#### Uniform Distribution
+#### **Uniform Distribution**
 Uniform distribution ensures that hash values are spread evenly across all slots. This minimizes collisions (multiple keys mapping to the same slot), which is crucial for maintaining fast lookup, insertion, and deletion times.
 
 If a hash function is not uniform, some slots will be crowded (many keys), while others are empty. This leads to more collisions and degrades performance.
 
-Here is the visualization for the Uniform Distribution: [image](../../assets/image/hash_slot_distribution.png)
+Here is the visualization for the Uniform Distribution:
+![Uniform Distribution](../../assets/image/hash_slot_distribution.png)
 
 
 
