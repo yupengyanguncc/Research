@@ -521,6 +521,42 @@ public class Main {
     }
 }
 ```
+## Load Factor
+
+**Load Factor** (often denoted as α) is a measure of how full a hash table is. It is defined as:
+
+```
+Load Factor = Number of elements in table / Table size
+```
+
+- For example, if a hash table has 10 slots and 7 elements, the load factor is 0.7.
+
+**Why is Load Factor important?**
+- A higher load factor increases the probability of collisions, which can slow down search, insert, and delete operations.
+- A lower load factor means more empty slots, so operations are faster, but space is less efficiently used.
+- Most hash table implementations automatically resize (rehash) the table when the load factor exceeds a certain threshold (commonly 0.7 or 0.75) to maintain good performance.
+
+**Recommended Ranges:**
+- For open hashing: load factor can be >1, but usually α ≤ 1 is preferred.
+- For closed hashing: keep the load factor below 0.7–0.8 for best performance.
+
+**Typical thresholds:**
+- Python `dict`: threshold ≈ 0.66
+- Java `HashMap`: default load factor is 0.75
+
+**Summary:**
+- The load factor is a key parameter for hash table efficiency.
+- Too high: more collisions, slower operations.
+- Too low: wasted space.
+- Choose a threshold that balances speed and space, and resize the table when necessary.
+
+| Load Factor (α) | Collision Probability | Search/Insert Efficiency | Space Utilization |
+|-----------------|----------------------|-------------------------|-------------------|
+| 0.2 | Very low | Very fast | Low |
+| 0.5 | Moderate | Fast | Fairly high |
+| 0.75 | High | Slower | High |
+| 1.0 | Very high | Very slow | Very high |
+
 
 ## 7. Best Practices
 
