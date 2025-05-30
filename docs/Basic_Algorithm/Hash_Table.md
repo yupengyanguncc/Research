@@ -49,9 +49,10 @@ Example: if we want to have an array that records how manu times each word apper
   This is not possible with a standard Java array.
 
 - **The Hash Table Solution:**
-  | Key | Count |
-  |--------|-------|
-  | hello | 3 |
+  
+  | Key  | Count |
+  |------|-------|
+  | hello| 3 |
   | and | 1 |
   | bye | 1 |
 
