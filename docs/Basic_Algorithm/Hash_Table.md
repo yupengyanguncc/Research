@@ -13,9 +13,93 @@ emoji: jemoji
 
 A hash table is an efficient data structure that maps keys to storage locations through a hash function, enabling fast data lookup, insertion, and deletion operations.
 
+## Prelimary:
+
+### Array vs Hash Table
+
+Example: if we want to have an array that records how manu times each word apperas:
+
+- **Array Limitation:**
+
+  | Index | Value |
+  |-------|---------|
+  | 0 | hello |
+  | 1 | and |
+  | 2 | hello |
+  | 3 | bye |
+  | 4 | hello |
+
+  In a standard array, you can only use integers as indices. For example:
+  ```java
+  String[] words = new String[5];
+  words[0] = "hello";
+  words[1] = "and";
+  words[4] = "bye";
+  ```
+  This stores the words, but:
+  - You don't know where a particular word (like "hello") is stored without searching the whole array.
+  - You can't use a string directly as an index to get the word count.
+
+- **The Ideal:**
+  What if you could use any data type (like a string) as an index?
+  ```java
+  words["hello"] = 0;
+  words["and"] = 0;
+  ```
+  This is not possible with a standard Java array.
+
+- **The Hash Table Solution:**
+  | Key | Count |
+  |--------|-------|
+  | hello | 3 |
+  | and | 1 |
+  | bye | 1 |
+
+  We can use a **hash function** to map any data type (e.g., a string) to an integer index:
+  ```java
+  public int h(String key) { ... }
+  words[h("hello")] = 0;
+  words[h("and")] = 0;
+  ```
+  - Now, you can efficiently store and retrieve counts (or any value) for any string, without searching the whole array.
+
+| Feature         | Array (Java)         | Hash Table (with h())         |
+|-----------------|---------------------|-------------------------------|
+| Index type      | Integer only        | Any data type (via hash)      |
+| Direct lookup   | Yes (by int index)  | Yes (by key, via hash)        |
+| Need to search? | Yes (for non-int)   | No (efficient lookup)         |
+| Example         | `words[0]`          | `words[h("hello")]`           |
+
+
 ## 1. Basic Concepts
 
 ### 1.1 What is a Hash Table?
+Formal Definition
+A hash table is a data structure that implements an associative array, mapping keys to values, using a hash function.
+Let
+$$ HT $$ be a table (array) of size $$ n $$
+$$ K $$ be the set of possible keys
+$$ V $$ be the set of possible values
+A hash table is a mapping:
+$$
+HT: K \rightarrow V
+$$
+implemented as an array of size $$ n $$, together with a hash function
+$$
+h: K \rightarrow \{0, 1, ..., n-1\}
+$$
+such that for each key $$ k \in K $$, the value $$ v $$ (called a **record**) is stored at index $$ h(k) $$ in the table:
+$$
+HT[h(k)] = v
+$$
+Requirements for the hash function $$ h $$:
+$$ h $$ should be efficient to compute (no table search).
+Ideally, for any two different keys $$ k_1 \neq k_2 $$, $$ h(k_1) \neq h(k_2) $$ (i.e., no collisions).
+In practice, collisions may occur, so collision resolution strategies are needed.
+Example:
+If $$ h(\text{"hello"}) = 3 $$ and $$ h(\text{"bye"}) = 3 $$, then inserting both would cause a collision at index 3, and one value would override the other unless handled properly.
+
+In another word:
 
 A hash table is like an intelligent library system:
 - Each book (data) has a unique number (key)
@@ -39,12 +123,39 @@ A hash function converts input of arbitrary size to a fixed-size output (usually
 
 ```python
 # Python Implementation
+# Returns the raw sum (not suitable for real hash tables)
+def simple_hash(key):
+    return sum(ord(c) for c in str(key))
+```
+
+```java
+// Java Implementation
+// Returns the raw sum (not suitable for real hash tables)
+public static int simpleHash(Object key ) {
+    String strKey = key.toString();
+    int sum = 0;
+    for (int i = 0; i < strKey.length(); i++) {
+        sum += (int) strKey.charAt(i);
+    }
+    return sum;
+}
+```
+
+![Simple hash (sum only)](../../assets/image/hash_function_visual.png)
+
+**Problem:**
+The hash value can be very large, so the array would need to be huge to avoid collisions. To fit the hash value into a table of fixed size, we use the mod operation:
+
+```python
+# Python Implementation
+# Returns the index in the table (0 <= index < size)
 def simple_hash(key, size):
     return sum(ord(c) for c in str(key)) % size
 ```
 
 ```java
 // Java Implementation
+// Returns the index in the table (0 <= index < size)
 public static int simpleHash(Object key, int size) {
     String strKey = key.toString();
     int sum = 0;
@@ -55,9 +166,11 @@ public static int simpleHash(Object key, int size) {
 }
 ```
 
+![Hash function with mod](../../assets/image/hash_function_mod_visual.png)
 
-This is the [ASCII Table](https://www.ascii-code.com/). We will introduce the Hash Function in detail [here](Hash_Function.html).
-
+> **Why Use a Large Prime Number for Hash Table Size?**
+>
+> Choosing a large prime number as the hash table size helps ensure a more uniform distribution of hash values, reducing collisions. If the table size is a composite number (especially one related to patterns in the hash function, such as 2, 4, 8, etc.), it can lead to clustering, where different keys map to the same slot. For example, if the table size is 8 (a non-prime), and the hash function often produces even numbers, only half of the slots will be used, wasting space and increasing the probability of collisions. Using a large prime number as the table size breaks these patterns, making the distribution of keys more random and uniform, thereby improving the performance of the hash table.
 
 ### 2.2 Storage Process
 
@@ -78,11 +191,11 @@ A collision occurs when two different keys map to the same index through the has
 
 ### 3.2 Methods to Handle Collisions
 
-1. **Separate Chaining**
+1. **Open Hashing**
    - Uses linked lists to store colliding elements
    ![Separate Chaining Illustration](../../assets/image/hash_table_chaining.png)
 
-2. **Open Addressing**
+2. **Closed Hashing**
    - Linear Probing
    - Quadratic Probing
    - Double Hashing
@@ -107,7 +220,7 @@ A hash function must be deterministic so that the same key always maps to the sa
 
 Suppose we use a bad hash function that returns a random slot each time:
 
-```python
+  ```python
 import random
 
 def bad_hash(key, size):
@@ -197,9 +310,9 @@ Suppose you have 10 slots and 1000 elements. Ideally, each slot has 100 elements
 
 | Operation | Average Case | Worst Case |
 |-----------|--------------|------------|
-| Search    | O(1)         | O(n)       |
-| Insert    | O(1)         | O(n)       |
-| Delete    | O(1)         | O(n)       |
+| Search    | $$\mathcal{O}$$(1)         | $$\mathcal{O}$$(n)       |
+| Insert    |$$\mathcal{O}$$(1)         | $$\mathcal{O}$$(n)       |
+| Delete    | $$\mathcal{O}$$(1)         | $$\mathcal{O}$$(n)       |
 
 ### 4.4 Space Complexity
 - Space Complexity: O(n), where n is the number of stored elements
