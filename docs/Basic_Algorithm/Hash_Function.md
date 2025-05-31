@@ -1,5 +1,5 @@
 ---
-title: Advanced Hash Functions 
+title: Advanced Hash Functions
 parent: Basic Algorithm
 author: Yupeng
 date: 2025-05-29
@@ -9,229 +9,153 @@ math: katex
 emoji: jemoji
 ---
 
-# Advanced Hash Functions 
+# Advanced Hash Functions
 
-## 1. Properties of Good Hash Functions
+## 1. Hash Function vs. Encryption: When Do You Need a Secure Hash?
+
+Hash functions and encryption are two different concepts, but in some scenarios, a hash function does need to have cryptographic or "secure" properties. Here's a detailed explanation:
+
+### 1.1 Ordinary Hash Functions Are Not for Encryption
+- In most hash table applications, the purpose of the hash function is to distribute keys uniformly across the table to minimize collisions and improve lookup/insert efficiency.
+- These hash functions only need to be fast, deterministic, and well-distributed—they do **not** need to be cryptographically secure or provide encryption.
+- Example: simple string or integer hash functions for hash tables.
+
+### 1.2 When Does a Hash Function Need to Be "Secure"?
+- **Preventing Attacks (Hash Flooding Attack):**
+  - In web servers, databases, or any hash table exposed to untrusted input, a simple hash function can be exploited by attackers. They can craft many keys that all hash to the same slot, causing the hash table to degrade to a linked list and severely slowing down the system (a denial-of-service attack).
+  - To prevent this, hash functions with randomization ("salting") or cryptographic properties are used, making it impossible for attackers to predict hash values.
+  - Example: Python 3.3+ uses a randomized seed for string hashes, so the hash value changes every time the interpreter starts.
+- **Cryptographic Applications:**
+  - If a hash table is used to store sensitive data such as passwords, tokens, or digital signatures, a cryptographic hash function (like SHA-256 or MD5) **must** be used. This prevents attackers from reversing the hash value to obtain the original data.
+  - Cryptographic hash functions provide collision resistance and preimage resistance, making it computationally infeasible to find two inputs with the same hash or to reverse the hash to the original input.
+
+## 2. Properties of Good Hash Functions
 
 A good hash function should have the following properties:
-
 - **Deterministic**: Same input always produces the same output
 - **Uniform Distribution**: Outputs should be evenly distributed across the range
 - **Avalanche Effect**: Small changes in input should cause large changes in output
 - **Efficiency**: Should be computationally efficient
+- **Collision Resistance** (for cryptographic use): Hard to find two different inputs with the same output
 
-## 2. Common Hash Functions
+## 3. Common Hash Functions
 
-### 2.1 MD5 (Message-Digest Algorithm 5)
+### 3.1 MD5 (Message-Digest Algorithm 5)
 - Output length: 128 bits (16 bytes)
-- Mathematical expression: $$ H(x) = f(x) \mod 2^{128} $$
-- **Detailed Process**:
-  1. **Padding**: 
-     - Append a single '1' bit
-     - Append '0' bits until length is 448 bits (mod 512)
-     - Append 64-bit original length
-  2. **Initialize Variables**:
-     ```
-     A = 0x67452301
-     B = 0xefcdab89
-     C = 0x98badcfe
-     D = 0x10325476
-     ```
-  3. **Main Loop**:
-     - Process data in 512-bit blocks
-     - 64 rounds of operations
-     - Each round uses different bit operations and constants
+- Fast, but not secure for cryptographic use (collisions found)
+- Use for file checksums, non-critical data validation
 
-- **Step-by-Step Example**:
-  Let's calculate MD5 for the string "Hello":
-  1. **Convert to bytes**:
-     ```
-     "Hello" -> [72, 101, 108, 108, 111]
-     Binary: 01001000 01100101 01101100 01101100 01101111
-     ```
-  2. **Add padding**:
-     ```
-     Original length: 40 bits
-     Add '1' bit: 01001000 01100101 01101100 01101100 01101111 1
-     Add '0' bits until 448 bits: ...0000
-     Add length (40 bits): ...00101000
-     ```
-  3. **Process in blocks**:
-     ```
-     Block 1: [72, 101, 108, 108, 111, 128, 0, 0, ..., 40]
-     ```
-  4. **Final result**:
-     ```
-     MD5("Hello") = 8b1a9953c4611296a827abf8c47804d7
-     ```
+**Python Example:**
+```python
+import hashlib
+print(hashlib.md5(b"Hello").hexdigest())  # 8b1a9953c4611296a827abf8c47804d7
+```
 
-- **Example with Different Inputs**:
-  ```python
-  import hashlib
-  
-  # Same input always gives same output
-  text1 = "Hello"
-  text2 = "Hello"
-  print(hashlib.md5(text1.encode()).hexdigest())  # 8b1a9953c4611296a827abf8c47804d7
-  print(hashlib.md5(text2.encode()).hexdigest())  # 8b1a9953c4611296a827abf8c47804d7
-  
-  # Small change in input causes big change in output
-  text3 = "Hello!"
-  print(hashlib.md5(text3.encode()).hexdigest())  # f7ff9e8b7bb2e09b70935a5d785e0cc5d9d0abf0
-  ```
-
-### 2.2 SHA-256 (Secure Hash Algorithm 256)
+### 3.2 SHA-256 (Secure Hash Algorithm 256)
 - Output length: 256 bits (32 bytes)
-- Mathematical expression: $$ H(x) = f(x) \mod 2^{256} $$
-- **Detailed Process**:
-  1. **Padding**:
-     - Similar to MD5 but with 512-bit block size
-     - More complex padding rules
-  2. **Initialize Variables**:
-     ```
-     h0 = 0x6a09e667
-     h1 = 0xbb67ae85
-     h2 = 0x3c6ef372
-     h3 = 0xa54ff53a
-     h4 = 0x510e527f
-     h5 = 0x9b05688c
-     h6 = 0x1f83d9ab
-     h7 = 0x5be0cd19
-     ```
-  3. **Main Loop**:
-     - 64 rounds of operations
-     - More complex bit operations than MD5
-     - Uses different constants for each round
+- Strong cryptographic hash, widely used for security
+- Use for password hashing, digital signatures, blockchain, file integrity
 
-- **Step-by-Step Example**:
-  Let's calculate SHA-256 for the string "Hello":
-  1. **Convert to bytes**:
-     ```
-     "Hello" -> [72, 101, 108, 108, 111]
-     Binary: 01001000 01100101 01101100 01101100 01101111
-     ```
-  2. **Add padding**:
-     ```
-     Original length: 40 bits
-     Add '1' bit: 01001000 01100101 01101100 01101100 01101111 1
-     Add '0' bits until 448 bits: ...0000
-     Add length (40 bits): ...00101000
-     ```
-  3. **Process in blocks**:
-     ```
-     Block 1: [72, 101, 108, 108, 111, 128, 0, 0, ..., 40]
-     ```
-  4. **Final result**:
-     ```
-     SHA-256("Hello") = 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
-     ```
+**Python Example:**
+```python
+import hashlib
+print(hashlib.sha256(b"Hello").hexdigest())
+# 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
+```
 
-- **Example with Different Inputs**:
-  ```python
-  import hashlib
-  
-  # Same input always gives same output
-  text1 = "Hello"
-  text2 = "Hello"
-  print(hashlib.sha256(text1.encode()).hexdigest())
-  # 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
-  print(hashlib.sha256(text2.encode()).hexdigest())
-  # 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
-  
-  # Small change in input causes big change in output
-  text3 = "Hello!"
-  print(hashlib.sha256(text3.encode()).hexdigest())
-  # 334d016f755cd6dc58c53a86e183882f8ec14f52fb05345887c8a5edd42c87b7
-  ```
-
-### 2.3 MurmurHash
+### 3.3 MurmurHash
 - Output length: 32 or 64 bits
-- Mathematical expression: $$ H(x) = (x \cdot c_1) \oplus ((x \cdot c_1) \gg r_1) $$
-- **Detailed Process**:
-  1. **Key Mixing**:
-     - Multiply key by a constant
-     - Rotate the result
-     - XOR with the result
-  2. **Final Mixing**:
-     - Additional mixing steps
-     - Final XOR operations
+- Very fast, non-cryptographic, good for hash tables and bloom filters
 
-- **Step-by-Step Example**:
-  Let's calculate MurmurHash3 for the string "Hello":
-  1. **Convert to bytes**:
-     ```
-     "Hello" -> [72, 101, 108, 108, 111]
-     ```
-  2. **Process in 4-byte blocks**:
-     ```
-     Block 1: [72, 101, 108, 108] -> 0x48656c6c
-     Block 2: [111, 0, 0, 0] -> 0x6f000000
-     ```
-  3. **Apply mixing function**:
-     ```
-     k1 = 0x48656c6c
-     k1 *= 0xcc9e2d51
-     k1 = (k1 << 15) | (k1 >> 17)
-     k1 *= 0x1b873593
-     ```
-  4. **Final result**:
-     ```
-     MurmurHash3("Hello") = 316307400
-     ```
+**Python Example:**
+```python
+import mmh3
+print(mmh3.hash("Hello"))  # 316307400
+```
 
-- **Example with Different Inputs**:
-  ```python
-  import mmh3
-  
-  # Same input always gives same output
-  text1 = "Hello"
-  text2 = "Hello"
-  print(mmh3.hash(text1))  # 316307400
-  print(mmh3.hash(text2))  # 316307400
-  
-  # Small change in input causes different output
-  text3 = "Hello!"
-  print(mmh3.hash(text3))  # -1327161286
-  ```
+## 4. Why Are Hash Functions Used for Password Storage?
 
-## 3. Hash Function Comparison
+Is it safe to store passwords using a hash function, given that different passwords could map to the same hash value?
 
-### 3.1 Distribution Analysis
-The following visualization shows the distribution of hash values for different algorithms:
+Yes, it is standard practice to store only the hash of a password (not the plaintext) in a database. While hash functions are theoretically subject to collisions (different inputs mapping to the same output), modern cryptographic hash functions like SHA-256 have such a large output space that collisions are extremely unlikely in practice. For additional security, passwords are usually hashed with a unique salt and multiple rounds (e.g., bcrypt, PBKDF2). This makes it computationally infeasible for attackers to recover the original password, even if they obtain the hash values.
 
-![Hash Distribution Comparison](../../assets/image/hash_functions_comparison.png)
+**Best practices for password storage:**
+- Never store plaintext passwords.
+- Use a strong cryptographic hash function (e.g., SHA-256, bcrypt, Argon2).
+- Always use a unique salt for each password.
+- Apply multiple rounds of hashing to slow down brute-force attacks.
 
-- **MD5**: Shows good distribution but with some clustering
-- **SHA-256**: Exhibits excellent uniform distribution
-- **MurmurHash**: Shows good distribution for non-cryptographic use
+This approach is widely used in the industry to protect user credentials and is considered secure when implemented correctly.
 
-### 3.2 Performance Comparison
+## 5. What Is Actually Stored? Plaintext vs. Hashed Passwords
 
-| Metric | MD5 | SHA-256 | MurmurHash |
-|--------|-----|----------|------------|
-| Speed | Fast | Slow | Very Fast |
-| Security | Low | High | Low |
-| Memory Usage | Low | High | Low |
-| Collision Resistance | Weak | Strong | Moderate |
+In a secure system, the password stored in the database is not the user's actual password, but the result of a hash function applied to the password (e.g., `hash(password)`). This ensures that even if the database is compromised, attackers cannot easily recover the original passwords.
 
-### 3.3 Use Case Recommendations
+| Username | Plaintext Password | Hashed Password (e.g., SHA-256)           |
+|----------|-------------------|--------------------------------------------|
+| alice    | password123       | 008c5926ca861023c1d2a36653fd88e2...        |
+| bob      | qwerty            | d8578edf8458ce06fbc5bb76a58c5ca4...        |
 
-1. **Security Applications**:
-   - Use SHA-256 for:
-     - Password hashing
-     - Digital signatures
-     - Blockchain
-     - File integrity verification
+- **Plaintext Password**: The actual password the user enters (never store this!).
+- **Hashed Password**: The result of applying a hash function to the password (this is what should be stored).
 
-2. **General Purpose**:
-   - Use MD5 for:
-     - File checksums
-     - Non-critical data deduplication
-     - Quick data validation
+When a user logs in, the system hashes the entered password and compares it to the stored hash. If they match, access is granted.
 
-3. **High Performance**:
-   - Use MurmurHash for:
-     - Hash tables
-     - Bloom filters
-     - Cache keys
-     - Load balancing 
+## 6. Summary and Best Practices
+
+- Use fast, well-distributed hash functions for general hash tables.
+- Use cryptographic hash functions (with salt and multiple rounds) for password and sensitive data storage.
+- Never store plaintext passwords.
+- Understand the difference between hash and encryption: hash is one-way and irreversible, encryption is reversible with a key.
+
+## Visualization: Hashing vs. Encryption
+
+### Hashing (One-way, Irreversible)
+
+```
+[Original Text]
+      |
+      v
+ [Hash Function]
+      |
+      v
+[Hashed String]
+```
+- **One-way:** You cannot get the original text back from the hashed string.
+
+### Encryption (Two-way, Reversible with Key)
+
+```
+[Plaintext] + [Encryption Key]
+      |
+      v
+ [Encryption Function]
+      |
+      v
+   [Ciphertext]
+      |
+      v
+ [Decryption Function] + [Decryption Key]
+      |
+      v
+[Plaintext]
+```
+- **Two-way:** You can recover the original text from the ciphertext if you have the correct key.
+
+### Comparison Table
+
+| Hashing (One-way)                | Encryption (Two-way)                |
+|-----------------------------------|-------------------------------------|
+| Original Text                     | Plaintext + Encryption Key          |
+| ↓                                 | ↓                                   |
+| Hash Function                     | Encryption Function                 |
+| ↓                                 | ↓                                   |
+| Hashed String (Digest)            | Ciphertext                          |
+| *(Cannot reverse to original)*    | ↓                                   |
+|                                   | Decryption Function + Decryption Key|
+|                                   | ↓                                   |
+|                                   | Plaintext (Recovered)               |
+
+**Summary:**  
+- **Hashing:** One-way, irreversible, used for integrity and password storage.  
+- **Encryption:** Two-way, reversible with a key, used for confidentiality.
