@@ -123,7 +123,7 @@ A hash table is like an intelligent library system:
 
 ## 2. Working Principle
 
-### 2.1 Hash Function
+### 2.1 Hash Function 
 
 A hash function converts input of arbitrary size to a fixed-size output (usually an integer). For example: 
 
@@ -177,6 +177,8 @@ public static int simpleHash(Object key, int size) {
 > **Why Use a Large Prime Number for Hash Table Size?**
 >
 > Choosing a large prime number as the hash table size helps ensure a more uniform distribution of hash values, reducing collisions. If the table size is a composite number (especially one related to patterns in the hash function, such as 2, 4, 8, etc.), it can lead to clustering, where different keys map to the same slot. For example, if the table size is 8 (a non-prime), and the hash function often produces even numbers, only half of the slots will be used, wasting space and increasing the probability of collisions. Using a large prime number as the table size breaks these patterns, making the distribution of keys more random and uniform, thereby improving the performance of the hash table.
+
+Here are some advance usage of the hash function [Advanced Hash Function](Hash_Function.html).
 
 ### 2.2 Storage Process
 
