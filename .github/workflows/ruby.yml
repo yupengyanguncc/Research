@@ -22,5 +22,8 @@ jobs:
     - name: Install dependencies
       run: bundle install
     
+    - name: Initialize RSpec
+      run: bundle exec rspec --init
+    
     - name: Run tests
       run: bundle exec rspec  
