@@ -1,6 +1,6 @@
 ---
 title: Hash Map
-parent: Basic Algorithm
+parent: Data Structure and Algorithm
 author: Yupeng
 date: 2025-06-01
 layout: default
@@ -172,4 +172,4 @@ System.out.println("Number of students after clearing: " + studentScores.size())
 ```
 
 ## Related Files
-- [HashMapDemo.java](../Basic_Algorithm/HashMapDemo.java) - Complete example demonstrating HashMap operations 
+- [HashMapDemo.java](../Data_Structure_and_Algorithm/HashMapDemo.java) - Complete example demonstrating HashMap operations 

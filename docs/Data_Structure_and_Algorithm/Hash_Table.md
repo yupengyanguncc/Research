@@ -1,6 +1,6 @@
 ---
 title: Hash Table 
-parent: Basic Algorithm
+parent: Data Structure and Algorithm
 author: Yupeng
 date: 2025-05-29
 layout: default
