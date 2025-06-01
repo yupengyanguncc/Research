@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # 使用 ubuntu-latest 而不是具体版本
+    runs-on: ubuntu-20.04  # 使用稳定的 Ubuntu 20.04 版本
     
     steps:
     - uses: actions/checkout@v3
