@@ -22,6 +22,7 @@ public class HashMapDemo {
         map4.put("C", 3);
         System.out.println("map4: " + map4);
 
+
         // put returns the previous value
         Integer oldValue = studentScores.put("Alice", 97);  // Update existing entry
         System.out.println("Alice's old score was: " + oldValue);
@@ -49,11 +50,11 @@ public class HashMapDemo {
         studentScores.replace("Alice", 100);
         System.out.println("Alice's final score: " + studentScores.get("Alice"));
 
-        System.out.println("studentScores.entrySet(): " + studentScores.entrySet());
 
 
         // Iterate using keySet
         Set<String> keys = studentScores.keySet();
+        System.out.println("studentScores.entrySet(): " + studentScores.entrySet());
 
         // Method 1: Using for-each loop
         for (String key : keys) {
