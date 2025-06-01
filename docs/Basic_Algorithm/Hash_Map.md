@@ -117,7 +117,7 @@ for (String key : keys) {
 2. Using forEach with lambda:
 ```java
 // Lambda Expression: parameter -> expression
-// - parameter: input parameter (here it's 'key')
+// - parameter: input parameter 
 // - -> : arrow operator
 // - expression: code to execute
 keys.forEach(key -> System.out.println(key + ": " + studentScores.get(key)));
@@ -125,7 +125,8 @@ keys.forEach(key -> System.out.println(key + ": " + studentScores.get(key)));
 
 Lambda expressions, introduced in Java 8, provide a concise way to write anonymous functions. They are particularly useful with HashMap's forEach method:
 
-1. **Basic Syntax**:
+**Lambda Syntax**:
+   
 ```java
 // Single parameter
 key -> System.out.println(key)
@@ -140,7 +141,6 @@ key -> {
 }
 ```
 
-2. **HashMap Applications**:
 ```java
 // Iterate with lambda
 studentScores.forEach((key, value) -> 
@@ -150,7 +150,7 @@ studentScores.forEach((key, value) ->
 ```
 
 
-1. Using iterator:
+3. Using iterator:
 ```java
 // Iterator: An object that enables you to traverse through a collection
 // - hasNext(): checks if there are more elements
@@ -169,11 +169,6 @@ while (iterator.hasNext()) {
 studentScores.clear();
 System.out.println("Number of students after clearing: " + studentScores.size());
 ```
-
-## Performance Characteristics
-- Average time complexity for basic operations (get, put, remove): O(1)
-- Worst-case time complexity: O(n) when there are many collisions
-
 
 ## Related Files
 - [HashMapDemo.java](../Basic_Algorithm/HashMapDemo.java) - Complete example demonstrating HashMap operations 
