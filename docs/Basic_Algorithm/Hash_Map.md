@@ -149,8 +149,8 @@ studentScores.forEach((key, value) ->
 
 ```
 
-
 3. Using iterator:
+   
 ```java
 // Iterator: An object that enables you to traverse through a collection
 // - hasNext(): checks if there are more elements
