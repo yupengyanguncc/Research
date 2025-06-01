@@ -18,7 +18,7 @@ jobs:
       with:
         ruby-version: '3.1.0'  # 更新到 3.1.0 以满足依赖要求
         bundler-cache: true
-        bundler: '2.4.22'
+        bundler: '2.5.9'  # 更新到与 lockfile 匹配的版本
     
     - name: Configure Bundler
       run: |
