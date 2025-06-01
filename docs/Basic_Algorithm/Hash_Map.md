@@ -52,6 +52,7 @@ HashMap<String, Integer> studentScores = new HashMap<>(100, 0.5f);
 ```
 
 4. **Creating from Another Map**:
+   
 ```java
 HashMap<String, Integer> existingMap = new HashMap<>();
 existingMap.put("A", 1);
