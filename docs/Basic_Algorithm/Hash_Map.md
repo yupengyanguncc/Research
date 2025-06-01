@@ -106,15 +106,22 @@ studentScores.replace("Alice", 100);  // Simple replace
 ### 5. Iterating Through HashMap
 Three common methods to iterate:
 
-1. Using for-each loop with keySet:
+#### 1. Using for-each loop with keySet:
 ```java
+// keySet(): returns a Set of all keys in the HashMap
+// Cannot use: for (studentScores.keys) - keys is not a property
+// Must use: for (String key : studentScores.keySet())
 Set<String> keys = studentScores.keySet();
 for (String key : keys) {
     System.out.println(key + ": " + studentScores.get(key));
 }
 ```
 
-2. Using forEach with lambda:
+**keySet() Explanation**:
+- Returns a Set view of all keys in the HashMap
+- Returns a Set that is backed by the HashMap (changes in one reflect in the other)
+
+#### 2. Using forEach with lambda:
 ```java
 // Lambda Expression: parameter -> expression
 // - parameter: input parameter 
@@ -149,7 +156,7 @@ studentScores.forEach((key, value) ->
 
 ```
 
-3. Using iterator:
+#### 3. Using iterator:
    
 ```java
 // Iterator: An object that enables you to traverse through a collection

@@ -55,6 +55,9 @@ public class HashMapDemo {
         // Iterate using keySet
         Set<String> keys = studentScores.keySet();
         System.out.println("studentScores.entrySet(): " + studentScores.entrySet());
+        for(String key : studentScores.keySet()) {
+            System.out.println(key + ": " + studentScores.get(key));
+        }
 
         // Method 1: Using for-each loop
         for (String key : keys) {
