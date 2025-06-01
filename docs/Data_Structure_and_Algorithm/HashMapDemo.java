@@ -14,7 +14,14 @@ public class HashMapDemo {
         studentScores.put("Alice", 95);  // Add new entry
         studentScores.put("Bob", 88);
         System.out.println("After putting Alice and Bob: " + studentScores);
+        String[] names = {"Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hank", "Ivy", "Jack"};
+        int[] scores = {95, 88, 75, 90, 85, 92, 88, 95, 80, 90};
+        for (int i = 0; i < names.length; i++) {
+            studentScores.put(names[i], scores[i]);
+        }
+        System.out.println("Student scores: " + studentScores);
 
+        // Create a new HashMap with existing data
         HashMap<String, Integer> existingMap = new HashMap<>();
         existingMap.put("A", 1);
         existingMap.put("B", 2);
@@ -55,9 +62,9 @@ public class HashMapDemo {
         // Iterate using keySet
         Set<String> keys = studentScores.keySet();
         System.out.println("studentScores.entrySet(): " + studentScores.entrySet());
-        for(String key : studentScores.keySet()) {
-            System.out.println(key + ": " + studentScores.get(key));
-        }
+        // for(String key : studentScores.keySet()) {
+        //     System.out.println(key + ": " + studentScores.get(key));
+        // }
 
         // Method 1: Using for-each loop
         for (String key : keys) {
