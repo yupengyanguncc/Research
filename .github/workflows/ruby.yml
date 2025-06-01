@@ -1,0 +1,35 @@
+name: Ruby Setup
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04  # 使用 GitHub 支持的 Ubuntu 版本
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.0'
+        bundler-cache: true
+        bundler: '2.4.22'
+    
+    - name: Configure Bundler
+      run: |
+        bundle config set --local deployment false
+        bundle config set --local frozen false
+    
+    - name: Install dependencies
+      run: bundle install
+    
+    - name: Initialize RSpec
+      run: bundle exec rspec --init
+    
+    - name: Run tests
+      run: bundle exec rspec  
