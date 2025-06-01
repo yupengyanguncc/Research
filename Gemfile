@@ -1,9 +1,6 @@
 source 'https://rubygems.org'
 
-# 添加 rspec 用于测试
-group :test do
-  gem 'rspec', '~> 3.12'
-end
+
 
 # 其他依赖
 gem "jekyll", "~> 4.3.4" # installed by `gem jekyll`
