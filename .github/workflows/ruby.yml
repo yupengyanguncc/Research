@@ -16,9 +16,9 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.1.0'  # 更新到 3.1.0 以满足依赖要求
+        ruby-version: '3.2.0'  # 更新到 3.2.0 以获得更新的 RubyGems
         bundler-cache: true
-        bundler: '2.5.9'  # 更新到与 lockfile 匹配的版本
+        bundler: '2.5.9'  # 保持与 lockfile 匹配的版本
     
     - name: Configure Bundler
       run: |
