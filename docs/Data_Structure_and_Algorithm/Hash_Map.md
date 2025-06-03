@@ -52,15 +52,18 @@ HashMap<String, Integer> studentScores = new HashMap<>(100, 0.5f);
 ```
 
 4. **Creating from Another Map**:
-   
+It is also called "Copy Constructor" or "Copy Initialization"
 ```java
-HashMap<String, Integer> existingMap = new HashMap<>();
+HashMap<String, Integer> existingMap = new HashMap<>(); //Map Copying
 existingMap.put("A", 1);
 existingMap.put("B", 2);
 
 HashMap<String, Integer> map4 = new HashMap<>(existingMap);
 // Creates a new HashMap containing all elements from existingMap
 ```
+
+In Java, this approach of creating an object copy through a constructor is a common implementation of `Shallow Copy`, more details are refered to [Shallow and Deep Copy](Shallow_and_deep_copy.html)
+
 
 **Parameter Explanation**:
 - **Initial Capacity**: The initial size of the internal array

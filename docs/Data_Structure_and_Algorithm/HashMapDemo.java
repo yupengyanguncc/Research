@@ -4,6 +4,8 @@ import java.util.Set;
  * HashMap<K,V> is a generic class where:
  * K - the type of keys maintained by this map
  * V - the type of mapped values
+ * @author Yupeng Yang
+ * @version Jun 01, 2025
  */
 public class HashMapDemo {
     public static void main(String[] args) {
