@@ -17,7 +17,7 @@ A hash table is an efficient data structure that maps keys to storage locations 
 
 ### Array vs Hash Table
 
-Example: if we want to have an array that records how manu times each word apperas:
+Example: if we want to have an array that records how many times each word appears:
 
 - **Array Limitation:**
 

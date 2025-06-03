@@ -11,7 +11,7 @@ emoji: jemoji
 
 # Generics in Java
 
-Generics is a feature in Java that allows you to write classes, interfaces, and methods that can work with different data types while maintaining type safety. It enables you to create type-safe collections and eliminate the need for type casting.
+Generics is a feature in Java that allows you to write classes, interfaces, and methods that can work with different data types while maintaining type safety. It enables you to create type-safe collections and eliminate the need for type casting. Code used in this material [Code](GenericSearch.java) :cool:
 
 ## Why Use Generics?
 
@@ -120,20 +120,11 @@ Box<String> box2 = new Box<>();         // Can create empty object
 box2.set("Hello");                      // Set value later
 ```
 
-### Generic Method
-```java
-public <T> void printArray(T[] array) {
-    for (T element : array) {
-        System.out.println(element);
-    }
-}
-```
+## Comparison: Generic Method vs Generic Class Implementation of Linear Search
 
-### Generic Method for the Linear Search
-
+### Generic Method Implementation
 ```java
 public class GenericLinearSearch {
-
     public static <T> int linearSearch(T[] arr, T target) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i].equals(target)) {
@@ -144,16 +135,15 @@ public class GenericLinearSearch {
     }
 }
 ```
-
-#### Usage
-
-```java
-linearSearch(array1, target1);
-linearSearch(array2, target2);
-linearSearch(array3, target3);
-```
-
-
+- **Scope**: Type parameter `<T>` is only used within the method
+- **Usage**: Can be called directly without creating an instance
+- **Flexibility**: Can search different array types in different calls
+- **Example Usage**:
+  ```java
+  linearSearch(array1, target1);  // Search integer array
+  linearSearch(array2, target2);  // Search string array
+  linearSearch(array3, target3);  // Search any other type array
+  ```
 
 ### Generic Class Implementation
 ```java
@@ -174,11 +164,28 @@ public class GenericLinearSearch<T> {
     }
 }
 ```
-#### Usage
+- **Scope**: Type parameter `<T>` is used throughout the class
+- **Usage**: Requires creating an instance with a specific array type
+- **Flexibility**: Once created, can only search arrays of the same type
+- **Example Usage**:
+  ```java
+  GenericLinearSearch<Integer> search = new GenericLinearSearch<>(array1);
+  search.linearSearch(target2);  // Can only search integer arrays
+  ```
 
-```java
-GenericLinearSearch<Integer> search = new  GenericLinearSearch<>(array1)
-search.linearSearch(target2);
-search.linearSearch(target3);
-search.linearSearch(target4);
-```
+### Key Differences
+1. **Type Binding**:
+   - Generic Method: Type is determined at each method call
+   - Generic Class: Type is fixed when the instance is created
+
+2. **Memory Usage**:
+   - Generic Method: No instance needed, more memory efficient
+   - Generic Class: Requires instance creation, stores array reference
+
+3. **Reusability**:
+   - Generic Method: Can search different array types in different calls
+   - Generic Class: Can only search arrays of the type specified at creation
+
+4. **Use Case Preference**:
+   - Generic Method: Better for one-time searches on different array types
+   - Generic Class: Better when you need to perform multiple searches on the same array

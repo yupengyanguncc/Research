@@ -52,7 +52,9 @@ HashMap<String, Integer> studentScores = new HashMap<>(100, 0.5f);
 ```
 
 4. **Creating from Another Map**:
+   
 It is also called "Copy Constructor" or "Copy Initialization"
+
 ```java
 HashMap<String, Integer> existingMap = new HashMap<>(); //Map Copying
 existingMap.put("A", 1);
