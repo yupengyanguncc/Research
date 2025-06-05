@@ -289,3 +289,137 @@ class InsertionSortScene(Scene):
             # Grey out sorted prefix up to i
             for k in range(i + 1):
                 boxes[k].set_color(GREY_B)
+
+class SelectionSortScene(Scene):
+
+    def construct(self):
+        values = [1, 9, 9, 7, 0, 9, 2, 3]
+        boxes = VGroup(*[make_box(v) for v in values])
+        boxes.arrange(RIGHT, buff=0.35).to_edge(UP, buff=0.5)
+        self.play(LaggedStart(*[FadeIn(b) for b in boxes], lag_ratio=0.05))
+        self.wait(0.3)
+
+        i_ptr = Text("i", color=YELLOW).scale(0.7)
+        j_ptr = Text("j", color=GREEN).scale(0.7)
+        max_ptr = Text("max", color=RED).scale(0.6)
+        i_ptr.next_to(boxes[-1], DOWN)
+        j_ptr.next_to(boxes[0], DOWN)
+        max_ptr.next_to(boxes[0], UP, buff=0.2)
+        self.play(FadeIn(i_ptr, j_ptr, max_ptr))
+
+        pass_label = Text(f"i = {len(values)-1}").scale(0.6).to_corner(DOWN + LEFT)
+        self.play(Write(pass_label))
+        self.wait(0.3)
+
+        n = len(values)
+        for i in range(n - 1, 0, -1):
+            if i < n - 1:
+                # Move i pointer left each pass and update label
+                self.play(i_ptr.animate.next_to(boxes[i], DOWN), run_time=0.3)
+                self.play(Transform(pass_label, Text(f"i = {i}").scale(0.6).to_corner(DOWN + LEFT)))
+
+            max_idx = 0
+            self.play(max_ptr.animate.next_to(boxes[max_idx], UP, buff=0.2), run_time=0.2)
+            # Scan unsorted portion 0..i to find index of max element
+            for j in range(1, i + 1):
+                self.play(j_ptr.animate.next_to(boxes[j], DOWN), run_time=0.15)
+                self.play(Indicate(boxes[j]), run_time=0.2)
+                if values[j] > values[max_idx]:
+                    max_idx = j
+                    # Move max pointer to new max
+                    self.play(max_ptr.animate.next_to(boxes[max_idx], UP, buff=0.2), run_time=0.2)
+
+            # Swap max element with element at i if needed
+            if max_idx != i:
+                pos_max = boxes[max_idx].get_center()
+                pos_i = boxes[i].get_center()
+                self.play(
+                    boxes[max_idx].animate.move_to(pos_i),
+                    boxes[i].animate.move_to(pos_max),
+                    run_time=0.4,
+                )
+                boxes[max_idx], boxes[i] = boxes[i], boxes[max_idx]
+                values[max_idx], values[i] = values[i], values[max_idx]
+
+            # Grey out finalised element at position i
+            boxes[i].set_color(GREY_B)
+
+        # Mark element at index 0 as sorted
+        boxes[0].set_color(GREY_B)
+
+class QuickSortScene(Scene):
+
+    def construct(self):
+        values = [1, 9, 9, 7, 0, 9, 2, 3]
+        boxes = VGroup(*[make_box(v) for v in values])
+        boxes.arrange(RIGHT, buff=0.35)
+        boxes.to_edge(UP, buff=1.5)  # leave vertical space for pivot label
+        self.play(LaggedStart(*[FadeIn(b) for b in boxes], lag_ratio=0.05))
+        self.wait(0.3)
+
+        range_lbl = Text("low=0, high=7").scale(0.6).to_corner(DOWN + LEFT)
+        self.play(Write(range_lbl))
+
+        def qs(low: int, high: int):
+            if low >= high:
+                boxes[low].set_color(GREY_B)
+                return
+
+            # Pivot marker
+            pivot_idx = high
+            pivot_val = values[pivot_idx]
+            pivot_tag = Text("pivot", color=CLR_PIVOT).scale(0.6)
+            pivot_tag.next_to(boxes[pivot_idx], UP, buff=0.25)
+            self.play(FadeIn(pivot_tag))
+
+            # Pointers
+            i = low - 1
+            i_ptr = Text("i", color=CLR_I).scale(0.6)
+            j_ptr = Text("j", color=CLR_J).scale(0.6)
+            self.add(i_ptr, j_ptr)
+            # Place j at low, i one box left (off‑table)
+            j_ptr.next_to(boxes[low], DOWN)
+            i_ptr.next_to(boxes[low], DOWN).shift(LEFT * 1.4)
+            self.play(FadeIn(i_ptr), FadeIn(j_ptr))
+
+            for j in range(low, high):
+                # Move j pointer stepwise
+                self.play(j_ptr.animate.next_to(boxes[j], DOWN), run_time=0.15)
+                self.play(Indicate(boxes[j]), run_time=0.2)
+                if values[j] < pivot_val:
+                    i += 1
+                    # Move i pointer simultaneously
+                    self.play(i_ptr.animate.next_to(boxes[i], DOWN), run_time=0.2)
+                    if i != j:
+                        pos_i, pos_j = boxes[i].get_center(), boxes[j].get_center()
+                        self.play(
+                            boxes[i].animate.move_to(pos_j), boxes[j].animate.move_to(pos_i), run_time=0.3
+                        )
+                        boxes[i], boxes[j] = boxes[j], boxes[i]
+                        values[i], values[j] = values[j], values[i]
+
+            self.play(i_ptr.animate.next_to(boxes[i + 1], DOWN), run_time=0.2)
+            pos_pivot, pos_target = boxes[pivot_idx].get_center(), boxes[i + 1].get_center()
+            self.play(
+                boxes[pivot_idx].animate.move_to(pos_target), boxes[i + 1].animate.move_to(pos_pivot), run_time=0.4
+            )
+            boxes[pivot_idx], boxes[i + 1] = boxes[i + 1], boxes[pivot_idx]
+            values[pivot_idx], values[i + 1] = values[i + 1], values[pivot_idx]
+            final = i + 1
+            boxes[final].set_color(GREY_B)
+
+            self.play(FadeOut(pivot_tag), FadeOut(i_ptr), FadeOut(j_ptr))
+
+            if low < final - 1:
+                self.play(Transform(range_lbl, Text(f"low={low}, high={final-1}").scale(0.6).to_corner(DOWN + LEFT)))
+                qs(low, final - 1)
+            if final + 1 < high:
+                self.play(Transform(range_lbl, Text(f"low={final+1}, high={high}").scale(0.6).to_corner(DOWN + LEFT)))
+                qs(final + 1, high)
+
+        qs(0, len(values) - 1)
+
+        sorted_banner = Text("Sorted array: [0,1,2,3,7,9,9,9]", color=GREEN).scale(0.8)
+        sorted_banner.next_to(boxes, DOWN, buff=0.3)
+        self.play(Write(sorted_banner))
+        self.wait(2)

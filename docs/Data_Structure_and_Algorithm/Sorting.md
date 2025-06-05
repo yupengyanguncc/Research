@@ -4,7 +4,7 @@ parent: Data Structure and Algorithm
 author: Yupeng
 date: 2025-06-02
 layout: default
-nav_order: 2.41
+nav_order: 2.3
 math: katex
 emoji: jemoji
 ---
