@@ -4,7 +4,7 @@ parent: Data Structure and Algorithm
 author: Yupeng
 date: 2025-06-02
 layout: default
-nav_order: 2.4
+nav_order: 2.41
 math: katex
 emoji: jemoji
 ---
@@ -329,11 +329,8 @@ Step 3: Process subarray quickSort(0,1)
   - Pivot: [0]
   - Elements > 0: [1]
 
-Step 4: Process subarray quickSort(0,0)
-- Array: [0]
-- Stops because left == right
 
-Step 5: Process right subarray quickSort(4,7)
+Step 4: Process right subarray quickSort(4,7)
 - Array: [9, 9, 9, 7]
 - Pivot = 7
 - After partition: [7, 9, 9, 9]
@@ -341,7 +338,7 @@ Step 5: Process right subarray quickSort(4,7)
   - Pivot: [7]
   - Elements > 7: [9, 9, 9]
 
-Step 6: Process subarray quickSort(5,7)
+Step 5: Process subarray quickSort(5,7)
 - Array: [9, 9, 9]
 - Pivot = 9
 - After partition: [9, 9, 9]
@@ -349,7 +346,7 @@ Step 6: Process subarray quickSort(5,7)
   - Pivot: [9]
   - Elements ≥ 9: [9, 9]
 
-Step 7: Process subarray quickSort(6,7)
+Step 6: Process subarray quickSort(6,7)
 - Array: [9, 9]
 - Pivot = 9
 - After partition: [9, 9]
