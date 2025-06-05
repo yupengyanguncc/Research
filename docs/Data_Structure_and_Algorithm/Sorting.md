@@ -10,7 +10,7 @@ emoji: jemoji
 ---
 
 # Sorting
-[Source code](sort_visualization.py) for visualization 
+Source code for visualization: [sort_visualization.py](sort_visualization.py)
 
 **Sorting** in Java means arranging elements in a collection (array, list, etc.) in a specific order (ascending or descending).
 
@@ -31,11 +31,12 @@ emoji: jemoji
 | 3     |  3     |   9    |
 
 **Visualization:**
-
-```mermaid
-flowchart LR
-    A[Unsorted: 0, 9, 2, 3] --> B[Compare & Swap]
-    B --> C[Sorted: 0, 2, 3, 9]
+```
+Unsorted: [0, 9, 2, 3]
+    ↓
+Compare & Swap
+    ↓
+Sorted: [0, 2, 3, 9]
 ```
 
 # Bubble Sort
