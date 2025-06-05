@@ -300,6 +300,155 @@ public class SelectionSortDemo {
 
 ![Quick Sort](../../assets/image/QuickSort.gif)
 
+**Detailed Step-by-Step Example:**
+Let's sort the array `[1, 9, 9, 7, 0, 9, 2, 3]`:
+
+```
+Initial array: [1, 9, 9, 7, 0, 9, 2, 3]
+
+Step 1: quickSort(0,7)
+- Pivot = 3 (last element)
+- After partition: [1, 0, 2, 3, 9, 9, 9, 7]
+  - Elements < 3: [1, 0, 2]
+  - Pivot: [3]
+  - Elements > 3: [9, 9, 9, 7]
+
+Step 2: Process left subarray quickSort(0,2)
+- Array: [1, 0, 2]
+- Pivot = 2
+- After partition: [1, 0, 2]
+  - Elements < 2: [1, 0]
+  - Pivot: [2]
+  - Elements > 2: []
+
+Step 3: Process subarray quickSort(0,1)
+- Array: [1, 0]
+- Pivot = 0
+- After partition: [0, 1]
+  - Elements < 0: []
+  - Pivot: [0]
+  - Elements > 0: [1]
+
+Step 4: Process subarray quickSort(0,0)
+- Array: [0]
+- Stops because left == right
+
+Step 5: Process right subarray quickSort(4,7)
+- Array: [9, 9, 9, 7]
+- Pivot = 7
+- After partition: [7, 9, 9, 9]
+  - Elements < 7: []
+  - Pivot: [7]
+  - Elements > 7: [9, 9, 9]
+
+Step 6: Process subarray quickSort(5,7)
+- Array: [9, 9, 9]
+- Pivot = 9
+- After partition: [9, 9, 9]
+  - Elements < 9: []
+  - Pivot: [9]
+  - Elements ≥ 9: [9, 9]
+
+Step 7: Process subarray quickSort(6,7)
+- Array: [9, 9]
+- Pivot = 9
+- After partition: [9, 9]
+  - Elements < 9: []
+  - Pivot: [9]
+  - Elements ≥ 9: [9]
+
+Final sorted array: [0, 1, 2, 3, 7, 9, 9, 9]
+```
+
+**Recursion Tree:**
+```
+quickSort(0,7)  → [1, 0, 2, 3, 9, 9, 9, 7]   (pivotIndex = 3)
+├── quickSort(0,2)  → [1, 0, 2]              (pivotIndex = 2)
+│   ├── quickSort(0,1)  → [0, 1]             (pivotIndex = 0)
+│   │   ├── quickSort(0,-1)   // stop: low > high
+│   │   └── quickSort(1,1)    // stop: length-1
+│   └── quickSort(3,2)        // stop: low > high
+└── quickSort(4,7)  → [7, 9, 9, 9]            (pivotIndex = 4)
+    ├── quickSort(4,3)        // stop: low > high
+    └── quickSort(5,7)  → [9, 9, 9]           (pivotIndex = 5)
+        ├── quickSort(5,4)    // stop: low > high
+        └── quickSort(6,7)  → [9, 9]          (pivotIndex = 6)
+            ├── quickSort(6,5) // stop: low > high
+            └── quickSort(7,7) // stop: length-1
+```
+
+**Key Points:**
+1. Each partition places the pivot in its final position
+2. Recursion stops when:
+   - Subarray has one element (left == right)
+   - Subarray is empty (left > right)
+3. The algorithm is complete when all subarrays are processed
+4. Time complexity:
+   - Best case: O(n log n)
+   - Worst case: O(n²)
+   - Average case: O(n log n)
+
+**Partition Process Details:**
+For the first partition with pivot = 3:
+```
+Initial array: [1, 9, 9, 7, 0, 9, 2, 3]
+pivot = 3 (last element)
+i = -1 (left - 1)
+j starts from left
+
+Step 1: j = 0, arr[0] = 1
+- 1 < 3 (pivot)
+- i++ (i changes from -1 to 0)
+- Swap arr[0] with arr[0] (same position, no change)
+- Array remains: [1, 9, 9, 7, 0, 9, 2, 3]
+
+Step 2: j = 1, arr[1] = 9
+- 9 > 3 (pivot)
+- No swap
+- Array remains: [1, 9, 9, 7, 0, 9, 2, 3]
+
+Step 3: j = 2, arr[2] = 9
+- 9 > 3 (pivot)
+- No swap
+- Array remains: [1, 9, 9, 7, 0, 9, 2, 3]
+
+Step 4: j = 3, arr[3] = 7
+- 7 > 3 (pivot)
+- No swap
+- Array remains: [1, 9, 9, 7, 0, 9, 2, 3]
+
+Step 5: j = 4, arr[4] = 0
+- 0 < 3 (pivot)
+- i++ (i changes from 0 to 1)
+- Swap arr[1] with arr[4]
+- Array becomes: [1, 0, 9, 7, 9, 9, 2, 3]
+
+Step 6: j = 5, arr[5] = 9
+- 9 > 3 (pivot)
+- No swap
+- Array remains: [1, 0, 9, 7, 9, 9, 2, 3]
+
+Step 7: j = 6, arr[6] = 2
+- 2 < 3 (pivot)
+- i++ (i changes from 1 to 2)
+- Swap arr[2] with arr[6]
+- Array becomes: [1, 0, 2, 7, 9, 9, 9, 3]
+
+Step 8: End of loop
+- Place pivot (3) in correct position
+- Swap arr[i+1] with arr[right]
+- Swap arr[3] with arr[7]
+- Final array: [1, 0, 2, 3, 9, 9, 9, 7]
+```
+
+**Partition Key Points:**
+1. `i` points to the last element that is less than the pivot
+2. `j` traverses the array to find elements less than the pivot
+3. When an element less than the pivot is found:
+   - Increment `i`
+   - Swap `arr[i]` and `arr[j]`
+4. Finally, place the pivot in its correct position (at `i+1`)
+
 **Java Implementation:**
 
 ```java
@@ -357,6 +506,57 @@ public class QuickSortDemo {
 - Space complexity assumes in-place implementation.
 - Quick Sort's worst case is rare with good pivot choice.
 - For Selection Sort, the number of comparisons is always n(n-1)/2 = n-1 + n-2 + ... + 1 because for each of the n-1 passes, it compares the current element with every other unsorted element. However, it only swaps once per pass (if needed), resulting in the fewest swaps among simple sorting algorithms.
+
+**Understanding Quick Sort's O(n log n) Complexity:**
+1. **Divide and Conquer Process:**
+   - Each partition splits array into two parts
+   - In best case, pivot divides array into equal halves
+   - This creates a balanced binary tree of operations
+
+2. **Recursion Tree Analysis:**
+   ```
+   Level 0: n elements
+   Level 1: n/2 + n/2 = n elements
+   Level 2: n/4 + n/4 + n/4 + n/4 = n elements
+   ...
+   Level h: n/2^h elements (where h is tree height)
+   ```
+
+3. **Visualization of Recursion Tree:**
+   ```
+   Best Case (Balanced Tree):
+   Level 0:        [n elements]          
+                    /          \
+   Level 1:    [n/2]          [n/2]      
+               /    \         /    \
+   Level 2: [n/4]  [n/4]   [n/4]  [n/4]  
+            /  \   /  \    /  \   /  \
+   Level 3: ...  ...  ...  ...  ...  ...
+
+   Worst Case (Linked List):
+   Level 0: [n elements]                 
+            /
+   Level 1: [n-1 elements]            
+            /
+   Level 2: [n-2 elements]       
+            /
+   Level 3: [n-3 elements]             
+            /
+   Level 4: [n-4 elements]            
+            /
+           ...
+   ```
+
+4. **Why O(n log n):**
+   - Each partitioning operation takes O(n) time (one pass through the array)
+   - In average case, we need log n partitioning operations (dividing array in half each time)
+   - Therefore, total time = O(n) × O(log n) = O(n log n)
+   - For n=1000: O(n²) needs ~500,000 comparisons, Quick Sort needs ~10,000
+
+5. **Worst Case O(n²):**
+   - Occurs when pivot always picks smallest/largest element
+   - Tree becomes a linked list
+   - Can be avoided with good pivot selection strategies
 
 ## Runtime Comparison Visualization
 
