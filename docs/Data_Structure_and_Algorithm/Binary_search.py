@@ -1,14 +1,13 @@
 %%manim -qm BinarySearchScene
 from manim import *
 
-# ---------- helper ---------- #
+
 def make_box(val, side=1):
     box = Square(side_length=side, color=WHITE)
     txt = Text(str(val), font_size=32)
     txt.move_to(box.get_center())
     return VGroup(box, txt)
 
-# ---------- constants ---------- #
 CLR_LOW   = BLUE
 CLR_HIGH  = YELLOW
 CLR_MID   = RED

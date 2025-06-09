@@ -29,6 +29,9 @@ emoji: jemoji
 | 3    | 2    | 2     | 2   | 5          | Found! |
 
 **Visualization:**
+
+[Source code](Binary_search.py) for visualization
+
 ![Binary Search](../../assets/image/BinarySearch.gif)
 
 ```
