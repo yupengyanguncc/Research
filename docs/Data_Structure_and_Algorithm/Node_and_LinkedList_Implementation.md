@@ -198,12 +198,38 @@ head ──▶ [5] ──▶ [2] ──▶ null
 size = 2
 
 Insert 8 at position 1:
-head ──▶ [5] ──▶ [8] ──▶ [2] ──▶ null
+Step 1: Find node at position 0 (before insertion point)
+        current = head (points to node 5)
+Step 2: Create new node [8]
+Step 3: newNode.next = current.next;  // [8].next = [2]
+Step 4: current.next = newNode;       // [5].next = [8]
+Result: head ──▶ [5] ──▶ [8] ──▶ [2] ──▶ null
 size = 3
 
 Delete from beginning:
-head ──▶ [8] ──▶ [2] ──▶ null
+Step 1: Save head.data = 5
+Step 2: head = head.next;  // head now points to [8]
+Result: head ──▶ [8] ──▶ [2] ──▶ null
 size = 2
+
+Delete from end:
+Step 1: Find second-to-last node
+        current = head (points to [8])
+        current.next.next = null, so stop here
+Step 2: Save current.next.data = 2
+Step 3: current.next = null;  // Remove last node
+Result: head ──▶ [8] ──▶ null
+size = 1
+
+Search for value 8:
+Step 1: current = head (points to [8])
+Step 2: current.data == 8? Yes! Return true
+
+Search for value 5:
+Step 1: current = head (points to [8])
+Step 2: current.data == 5? No, move to next
+Step 3: current = current.next (points to null)
+Step 4: current == null? Yes, return false
 ```
 
 ## Doubly Linked List Implementation
