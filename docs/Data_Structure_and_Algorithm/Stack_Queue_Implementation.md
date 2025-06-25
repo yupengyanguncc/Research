@@ -2,9 +2,9 @@
 title: Stack and Queue Implementation with Arrays
 parent: Data Structure and Algorithm
 author: Yupeng
-date: 2025-06-15
+date: 2025-06-20
 layout: default
-nav_order: 3.2
+nav_order: 3.3
 math: katex
 emoji: jemoji
 ---
