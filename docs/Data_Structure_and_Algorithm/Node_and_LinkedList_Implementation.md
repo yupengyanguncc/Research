@@ -532,6 +532,7 @@ public class TaskSchedulerExample {
   - Better for complex operations
 
 ### 2. Time Complexity Analysis
+
 | Operation | Singly Linked List | Doubly Linked List |
 |-----------|-------------------|-------------------|
 | Insert at beginning | O(1) | O(1) |
