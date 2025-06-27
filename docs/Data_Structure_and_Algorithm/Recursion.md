@@ -318,6 +318,93 @@ public int factorialTailRecursive(int n, int accumulator) {
 // Initial call: factorialTailRecursive(n, 1)
 ```
 
+### Visualization: Regular vs Tail Recursion
+
+#### Regular Recursion Execution Process
+```
+Example: factorial(4)
+
+Call Stack Visualization:
+┌─────────────────────────────────────┐
+│ factorial(4)                        │
+│   return 4 * factorial(3)           │
+│   ┌─────────────────────────────────┐│
+│   │ factorial(3)                    ││
+│   │   return 3 * factorial(2)       ││
+│   │   ┌─────────────────────────────┐││
+│   │   │ factorial(2)                │││
+│   │   │   return 2 * factorial(1)   │││
+│   │   │   ┌─────────────────────────┐│││
+│   │   │   │ factorial(1)            ││││
+│   │   │   │   return 1              ││││
+│   │   │   └─────────────────────────┘│││
+│   │   └─────────────────────────────┘││
+│   └─────────────────────────────────┘│
+└─────────────────────────────────────┘
+
+Step-by-Step Execution:
+Step 1: factorial(4) calls factorial(3)
+Step 2: factorial(3) calls factorial(2)  
+Step 3: factorial(2) calls factorial(1)
+Step 4: factorial(1) returns 1
+Step 5: factorial(2) calculates 2 * 1 = 2      ← Must wait and calculate back
+Step 6: factorial(3) calculates 3 * 2 = 6      ← Must wait and calculate back  
+Step 7: factorial(4) calculates 4 * 6 = 24     ← Must wait and calculate back
+
+Final Result: 24
+
+Memory Usage:
+- Each call must wait for sub-call to complete
+- All calls remain on stack until base case
+- Stack space: O(n)
+```
+
+#### Tail Recursion Execution Process
+```
+Example: factorialTail(4, 1)
+
+Call Stack Visualization (Optimized):
+┌─────────────────────────────────────┐
+│ factorialTail(4, 1)                 │
+│   return factorialTail(3, 4)        │
+│   ┌─────────────────────────────────┐│
+│   │ factorialTail(3, 4)             ││
+│   │   return factorialTail(2, 12)   ││
+│   │   ┌─────────────────────────────┐││
+│   │   │ factorialTail(2, 12)        │││
+│   │   │   return factorialTail(1, 24)│││
+│   │   │   ┌─────────────────────────┐│││
+│   │   │   │ factorialTail(1, 24)    ││││
+│   │   │   │   return 24             ││││
+│   │   │   └─────────────────────────┘│││
+│   │   └─────────────────────────────┘││
+│   └─────────────────────────────────┘│
+└─────────────────────────────────────┘
+
+Step-by-Step Execution:
+Step 1: factorialTail(4, 1) → factorialTail(3, 4)
+Step 2: factorialTail(3, 4) → factorialTail(2, 12)  
+Step 3: factorialTail(2, 12) → factorialTail(1, 24)
+Step 4: factorialTail(1, 24) → returns 24 directly
+
+Final Result: 24
+
+Memory Usage (Optimized):
+- No waiting for sub-calls to complete
+- Previous calls can be discarded
+- Stack space: O(1) after optimization
+```
+
+#### Key Differences Summary
+
+| Aspect | Regular Recursion | Tail Recursion |
+|--------|-------------------|----------------|
+| **Return Process** | Must wait and calculate back | Direct return |
+| **Stack Usage** | O(n) - all calls remain | O(1) - optimized |
+| **Memory Efficiency** | Poor - keeps all states | Good - discards old states |
+| **Compiler Optimization** | Limited | Full optimization possible |
+| **Stack Overflow Risk** | High for large n | Low - can be optimized to loop |
+
 #### 2. Convert to Iteration
 ```java
 public int factorialIterative(int n) {
@@ -564,6 +651,7 @@ public int factorial(int n) {
 ```
 
 2. **Reverse String**:
+   
 ```java
 public String reverseString(String str) {
     if (str.length() <= 1) return str;
@@ -572,6 +660,7 @@ public String reverseString(String str) {
 ```
 
 3. **Palindrome Check**:
+   
 ```java
 public boolean isPalindrome(String str) {
     if (str.length() <= 1) return true;
@@ -581,6 +670,7 @@ public boolean isPalindrome(String str) {
 ```
 
 4. **Power Function**:
+   
 ```java
 public double power(double base, int exponent) {
     if (exponent == 0) return 1;
