@@ -551,6 +551,7 @@ public class TreeTraversalExample {
 ### Answers
 
 1. **Tail Recursive Factorial**:
+   
 ```java
 public int factorialTail(int n, int accumulator) {
     if (n <= 1) return accumulator;
