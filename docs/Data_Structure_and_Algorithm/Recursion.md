@@ -264,6 +264,40 @@ public int fibonacciNaive(int n) {
 }
 ```
 
+### Visualization of Fibonacci Recursion
+```
+Example: fibonacciNaive(5)
+
+Call Tree Visualization:
+                    fib(5)
+                   /      \
+              fib(4)      fib(3)
+             /      \     /      \
+        fib(3)    fib(2) fib(2)  fib(1)
+       /      \   /    \  /    \
+   fib(2) fib(1) fib(1) fib(0) fib(1) fib(0)
+   /    \
+fib(1) fib(0)
+
+Total function calls: 15
+
+Step-by-Step Analysis:
+- fib(5) calls fib(4) and fib(3)
+- fib(4) calls fib(3) and fib(2)  
+- fib(3) calls fib(2) and fib(1)
+- fib(2) calls fib(1) and fib(0)
+- fib(1) and fib(0) are base cases
+
+Repeated Calculations:
+- fib(3) is calculated 2 times
+- fib(2) is calculated 3 times
+- fib(1) is calculated 5 times  
+- fib(0) is calculated 3 times
+
+Time Complexity: O(2^n) - exponential growth
+Space Complexity: O(n) - maximum recursion depth
+```
+
 ### Symptoms of Stack Overflow
 - Program crashes with "StackOverflowError"
 - High memory usage
