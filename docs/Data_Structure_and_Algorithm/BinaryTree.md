@@ -2252,6 +2252,153 @@ class Codec {
 }
 ```
 
+## Practice Problem: Two Sum in Binary Search Tree
+
+### Problem Description
+Given a Binary Search Tree and a target sum, find all pairs of nodes whose values sum up to the target. Return the pairs as a list of arrays.
+
+### Examples
+```
+Input: 
+    5
+   / \
+  3   7
+ / \   \
+1   4   9
+target = 8
+
+Output: [[1,7], [3,5]]
+
+Explanation:
+- 1 + 7 = 8
+- 3 + 5 = 8
+```
+
+```
+Input:
+    10
+   /  \
+  5    15
+ / \     \
+3   7     18
+target = 12
+
+Output: [[5,7]]
+
+Explanation:
+- 5 + 7 = 12
+```
+
+### Solution Approach
+This problem combines Binary Search Tree traversal with Hash Table for efficient lookup.
+
+#### Inorder Traversal + Hash Table
+```java
+class Solution {
+    public List<List<Integer>> findPairs(TreeNode root, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
+        
+        // Inorder traversal to visit nodes in sorted order
+        inorderTraversal(root, target, set, result);
+        
+        return result;
+    }
+    
+    private void inorderTraversal(TreeNode node, int target, Set<Integer> set, List<List<Integer>> result) {
+        if (node == null) return;
+        
+        // Traverse left subtree
+        inorderTraversal(node.left, target, set, result);
+        
+        // Check if complement exists in hash table
+        int complement = target - node.val;
+        if (set.contains(complement)) {
+            result.add(Arrays.asList(complement, node.val));
+        }
+        
+        // Add current node to hash table
+        set.add(node.val);
+        
+        // Traverse right subtree
+        inorderTraversal(node.right, target, set, result);
+    }
+}
+```
+
+### Step-by-Step Visualization
+
+```
+Tree:       5
+          /   \
+         3     7
+        / \     \
+       1   4     9
+Target: 8
+
+Step-by-Step Process:
+
+Step 1: Inorder traversal starts
+  - Go to leftmost node (1)
+  - Check: complement = 8 - 1 = 7
+  - Hash table: {} (empty)
+  - Add 1 to hash table: {1}
+
+Step 2: Visit node 3
+  - Check: complement = 8 - 3 = 5
+  - Hash table: {1}
+  - 5 not found, add 3: {1, 3}
+
+Step 3: Visit node 4
+  - Check: complement = 8 - 4 = 4
+  - Hash table: {1, 3}
+  - 4 not found, add 4: {1, 3, 4}
+
+Step 4: Visit node 5
+  - Check: complement = 8 - 5 = 3
+  - Hash table: {1, 3, 4}
+  - 3 found! Add pair [3, 5]
+  - Add 5: {1, 3, 4, 5}
+
+Step 5: Visit node 7
+  - Check: complement = 8 - 7 = 1
+  - Hash table: {1, 3, 4, 5}
+  - 1 found! Add pair [1, 7]
+  - Add 7: {1, 3, 4, 5, 7}
+
+Step 6: Visit node 9
+  - Check: complement = 8 - 9 = -1
+  - Hash table: {1, 3, 4, 5, 7}
+  - -1 not found, add 9: {1, 3, 4, 5, 7, 9}
+
+Result: [[3,5], [1,7]]
+```
+
+### Complexity Analysis
+
+- **Time Complexity**: O(n) - single inorder traversal
+- **Space Complexity**: O(n) - hash table storage
+- **Advantages**: Single pass, efficient O(1) lookup
+- **Disadvantages**: Extra space for hash table
+
+### Follow-up Questions
+
+1. **What if the tree is not a BST?**
+   - Hash table approach still works
+   - Two pointers approach fails (array not sorted)
+
+2. **What if we need to find all possible pairs (including duplicates)?**
+   - Use HashMap<Integer, Integer> to count frequencies
+   - Handle cases where node.val == target/2
+
+### Related Problems
+- **Two Sum** (Array version)
+- **Find Mode in Binary Search Tree**
+- **Convert BST to Greater Tree**
+- **Two Sum IV - Input is a BST**
+
+This problem demonstrates how combining different data structures (Binary Search Tree + Hash Table) can lead to efficient solutions for complex problems.
+
 ## Summary
 
 - **Binary Tree**: Hierarchical structure with at most 2 children per node
