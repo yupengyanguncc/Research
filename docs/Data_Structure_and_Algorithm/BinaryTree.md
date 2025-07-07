@@ -25,7 +25,7 @@ Comparison of Data Structures:
 | Operation | Array | Linked List | Binary Tree (BST) |
 |-----------|-------|-------------|-------------------|
 | Search    | O(n)  | O(n)        | O(log n)          |
-| Insert    | O(n)  | O(1)        | O(log n)          |
+| Insert    | O(n)  | O(n)        | O(log n)          |
 | Delete    | O(n)  | O(n)        | O(log n)          |
 | Traversal | O(n)  | O(n)        | O(n)              |
 
@@ -230,6 +230,11 @@ Balancing Benefits:
 ### Real-World Impact
 
 #### Performance Comparison
+
+![Complexity Comparison](../../assets/image/complexity_comparison.png)
+
+*Figure: Time complexity comparison between linear O(n) and logarithmic O(log n) algorithms. The logarithmic growth (red line) shows dramatically better performance for large datasets.*
+
 ```
 Dataset Size: 1,000,000 elements
 
@@ -346,6 +351,8 @@ Only need to check 4 nodes
 ```
 
 #### Why Logarithmic Growth is So Important?
+
+As shown in the complexity comparison chart above, logarithmic growth provides dramatic performance advantages:
 
 ```
 Data Size Growth Comparison:
@@ -603,58 +610,327 @@ public static <T extends Comparable<T>> BinaryTree<T> buildTree(T[] elements) {
 }
 ```
 
+#### Generic Method Explanation
+
+**Why `public static <T extends Comparable<T>> BinaryTree<T> buildTree(T[] elements)`?**
+
+Let's break down this method signature:
+
+```
+public static <T extends Comparable<T>> BinaryTree<T> buildTree(T[] elements)
+│     │      │                        │              │        │
+│     │      │                        │              │        └── Parameter type
+│     │      │                        │              └── Method name
+│     │      │                        └── Return type
+│     │      └── Type parameter constraint
+│     └── Type parameter declaration
+└── Access modifier
+```
+
+**1. `<T extends Comparable<T>>` - Type Parameter Declaration**
+```java
+// This declares a type parameter T that must be Comparable
+<T extends Comparable<T>>
+
+// Examples of valid types:
+Integer (implements Comparable<Integer>)
+String (implements Comparable<String>)
+Double (implements Comparable<Double>)
+
+// Examples of invalid types:
+Object (doesn't implement Comparable)
+CustomClass (unless it implements Comparable<CustomClass>)
+```
+
+**2. Why `extends Comparable<T>`?**
+```java
+// We need Comparable because our BinaryTree uses compareTo() method
+int comparison = data.compareTo(node.data);  // This requires Comparable
+
+// Without Comparable constraint, this would cause compilation error:
+public static <T> BinaryTree<T> buildTree(T[] elements) {  // ❌ Error!
+    // data.compareTo(node.data) - T doesn't have compareTo method
+}
+```
+
+**3. Why `BinaryTree<T>` as return type?**
+```java
+// Return type matches the type parameter
+BinaryTree<T> tree = new BinaryTree<>();  // Creates tree of same type T
+return tree;  // Returns tree of type T
+```
+
+**4. Why `T[] elements` as parameter?**
+```java
+// Parameter type matches the type parameter
+T[] elements  // Array of type T
+for (T element : elements) {  // Each element is of type T
+    tree.insert(element);     // Insert T into BinaryTree<T>
+}
+```
+
+#### Benefits of Our Generic Approach
+
+**1. Type Safety**
+```java
+// Compiler ensures type consistency
+BinaryTree<Integer> tree = buildTree(numbers);
+tree.insert(42);        // ✅ Valid
+tree.insert("hello");   // ❌ Compilation error
+```
+
+**2. Code Reusability**
+```java
+// Same method works for multiple types
+buildTree(new Integer[]{1, 2, 3});     // ✅ Integer tree
+buildTree(new String[]{"a", "b", "c"}); // ✅ String tree
+buildTree(new Double[]{1.1, 2.2, 3.3}); // ✅ Double tree
+```
+
+**3. Performance**
+```java
+// No runtime type checking needed
+// No boxing/unboxing overhead
+// Direct method calls
+```
+
+**4. Compile-time Error Detection**
+```java
+// Errors caught at compile time, not runtime
+BinaryTree<String> tree = buildTree(numbers);  // ❌ Compilation error
+```
+
+#### What Happens If You Don't Use BinaryTree<T>?
+
+**Scenario 1: Using Raw Type BinaryTree**
+```java
+// ❌ BAD: Using raw type
+public static BinaryTree buildTree(Object[] elements) {
+    BinaryTree tree = new BinaryTree();  // Raw type
+    for (Object element : elements) {
+        tree.insert(element);  // ❌ Type unsafe
+    }
+    return tree;
+}
+
+// Problems:
+// 1. No type checking
+// 2. Runtime errors possible
+// 3. Compiler warnings
+// 4. Unclear what type of tree you get back
+```
+
+**Important Note: Raw Types DO Work!**
+```java
+// ✅ This actually works and compiles:
+public static BinaryTree buildTree(Object[] elements) {
+    BinaryTree tree = new BinaryTree();
+    for (Object element : elements) {
+        tree.insert(element);
+    }
+    return tree;
+}
+
+// Usage:
+Object[] data = {1, 2, 3, 4, 5};
+BinaryTree tree = buildTree(data);  // ✅ This works!
+tree.search(3);  // ✅ This works!
+```
+
+**So Why Use Generics Then?**
+
+The raw type approach **works** but has **risks**:
+
+1. **It works when data is consistent:**
+```java
+Object[] numbers = {1, 2, 3, 4, 5};  // ✅ All same type
+BinaryTree tree = buildTree(numbers); // ✅ Works fine
+```
+
+2. **It also works when data is mixed (but with risks):**
+```java
+Object[] mixed = {1, "hello", 3.14};  // Mixed types
+BinaryTree tree = buildTree(mixed);    // ✅ Compiles and runs
+// But may cause runtime errors when tree operations are performed
+```
+
+**Example: Runtime Risk with Mixed Data**
+```java
+// Raw type method - accepts mixed data
+public static BinaryTree buildTree(Object[] elements) {
+    BinaryTree tree = new BinaryTree();
+    for (Object element : elements) {
+        tree.insert(element);
+    }
+    return tree;
+}
+
+// Usage with mixed data:
+Object[] mixed = {1, "hello", 3.14, true};
+BinaryTree tree = buildTree(mixed);  // ✅ Compiles successfully
+
+// The tree is built, but operations may fail:
+tree.search(1);      // ✅ May work (Integer comparison)
+tree.search("hello"); // ✅ May work (String comparison)
+tree.search(3.14);   // ❌ May cause ClassCastException
+tree.search(true);   // ❌ May cause ClassCastException
+
+// The problem occurs when tree tries to compare different types:
+// 1.compareTo("hello") → ClassCastException
+// "hello".compareTo(3.14) → ClassCastException
+```
+
+**Scenario 2: Using Specific Type**
+```java
+// ❌ BAD: Hard-coded to one type
+public static BinaryTree<Integer> buildTree(Object[] elements) {
+    BinaryTree<Integer> tree = new BinaryTree<>();
+    for (Object element : elements) {
+        tree.insert((Integer) element);  // ❌ Dangerous cast
+    }
+    return tree;
+}
+
+// Problems:
+// 1. Runtime ClassCastException possible
+// 2. Only works with Integer
+// 3. Type casting overhead
+```
+
+**Scenario 3: Using Wildcard**
+```java
+// ❌ BAD: Using wildcard
+public static BinaryTree<?> buildTree(Object[] elements) {
+    BinaryTree<?> tree = new BinaryTree<>();
+    for (Object element : elements) {
+        // tree.insert(element);  // ❌ Cannot insert into wildcard type
+    }
+    return tree;
+}
+
+// Problems:
+// 1. Cannot insert elements
+// 2. Useless return type
+// 3. No type safety
+```
+
+#### Real Examples: When Raw Types Work vs Fail
+
+**✅ Raw Types Work (Consistent Data):**
+```java
+// This works perfectly fine:
+public static BinaryTree buildTree(Object[] elements) {
+    BinaryTree tree = new BinaryTree();
+    for (Object element : elements) {
+        tree.insert(element);
+    }
+    return tree;
+}
+
+// Usage with consistent data:
+Object[] numbers = {1, 2, 3, 4, 5};
+BinaryTree tree = buildTree(numbers);
+System.out.println(tree.search(3));  // ✅ Prints: true
+System.out.println(tree.search(10)); // ✅ Prints: false
+```
+
+**❌ Raw Types Fail (Mixed Data):**
+```java
+// Same method, but with mixed data:
+Object[] mixed = {1, "hello", 3.14, true};
+BinaryTree tree = buildTree(mixed);
+
+// This will crash at runtime:
+// java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Integer
+```
+
+#### Why Generics Are Better (Even Though Raw Types Work)
+
+**Raw Type Approach:**
+```java
+// ✅ Works, but risky
+public static BinaryTree buildTree(Object[] elements) {
+    BinaryTree tree = new BinaryTree();
+    for (Object element : elements) {
+        tree.insert(element);  // No type checking
+    }
+    return tree;
+}
+
+// Usage:
+BinaryTree tree = buildTree(data);
+// What type is this tree? Unknown!
+// Will it crash? Maybe, depends on data!
+```
+
+**Generic Approach:**
+```java
+// ✅ Works, and safe
+public static <T extends Comparable<T>> BinaryTree<T> buildTree(T[] elements) {
+    BinaryTree<T> tree = new BinaryTree<>();
+    for (T element : elements) {
+        tree.insert(element);  // Type checked
+    }
+    return tree;
+}
+
+// Usage:
+BinaryTree<Integer> tree = buildTree(numbers);
+// Clear: this is an Integer tree
+// Guaranteed: won't crash due to type issues
+```
+
+#### Summary: Raw Types vs Generics
+
+| Aspect | Raw Types | Generics |
+|--------|-----------|----------|
+| **Does it work?** | ✅ Yes (with consistent data) | ✅ Yes (always) |
+| **Type safety** | ❌ No | ✅ Yes |
+| **Runtime errors** | ❌ Possible | ✅ Prevented |
+| **Code clarity** | ❌ Unclear types | ✅ Clear types |
+| **IDE support** | ❌ Limited | ✅ Full |
+| **Best practice** | ❌ Avoid | ✅ Recommended |
+
+**Bottom Line**: Raw types **do work** for simple cases, but generics are **safer and better** because they prevent runtime errors and provide better code quality!
+
 #### Tree Building Visualization
 
 ```
-Building tree from array: [50, 30, 70, 20, 40, 60, 80]
+Building tree from array: [50, 30, 70, 20, 40]
 
-Step 1: Insert 50
+Step 1: Insert 50 (Root)
        50
 
-Step 2: Insert 30
+Step 2: Insert 30 (30 < 50, go left)
        50
       /
      30
 
-Step 3: Insert 70
+Step 3: Insert 70 (70 > 50, go right)
        50
       /  \
      30   70
 
-Step 4: Insert 20
+Step 4: Insert 20 (20 < 50, 20 < 30, go left)
        50
       /  \
      30   70
     /
    20
 
-Step 5: Insert 40
+Step 5: Insert 40 (40 < 50, 40 > 30, go right)
        50
       /  \
      30   70
     /  \
    20   40
 
-Step 6: Insert 60
-       50
-      /  \
-     30   70
-    /  \  /
-   20   40 60
-
-Step 7: Insert 80
-       50
-      /  \
-     30   70
-    /  \  /  \
-   20   40 60  80
-
 Final Tree Structure:
        50
       /  \
      30   70
-    /  \  /  \
-   20   40 60  80
+    /  \
+   20   40
 ```
 
 #### 2. Tree Structure Visualization
@@ -689,8 +965,6 @@ Tree Structure:
 │   │   ├── 20
 │   │   └── 40
 │   └── 70
-│       ├── 60
-│       └── 80
 
 Visualization Explanation:
 ┌── Root node (50)
@@ -698,8 +972,6 @@ Visualization Explanation:
 │   │   ├── Left child of 30 (20)
 │   │   └── Right child of 30 (40)
 │   └── Right subtree of 50 (70)
-│       ├── Left child of 70 (60)
-│       └── Right child of 70 (80)
 ```
 
 #### 3. Level Order Visualization
@@ -737,17 +1009,17 @@ public static <T extends Comparable<T>> void printLevelOrder(TreeNode<T> root) {
 Level Order Traversal:
 50 
 30 70 
-20 40 60 80
+20 40
 
 Visualization Explanation:
 Level 0: 50 (Root)
 Level 1: 30, 70 (Children of root)
-Level 2: 20, 40, 60, 80 (Grandchildren)
+Level 2: 20, 40 (Children of 30 and 70)
 
 Queue State Visualization:
 Initial: [50]
 Level 1: [30, 70]     (after processing 50)
-Level 2: [20, 40, 60, 80]  (after processing 30, 70)
+Level 2: [20, 40]     (after processing 30, 70)
 Level 3: []         (after processing all children)
 ```
 
@@ -818,8 +1090,8 @@ Example Tree:
        50
       /  \
      30   70
-    /  \  /  \
-   20   40 60  80
+    /  \
+   20   40
 
 1. Tree Structure Output:
 ┌── 50
@@ -827,18 +1099,16 @@ Example Tree:
 │   │   ├── 20
 │   │   └── 40
 │   └── 70
-│       ├── 60
-│       └── 80
 
 2. Level Order Output:
 50 
 30 70 
-20 40 60 80
+20 40
 
 3. Tree Properties:
-- Height: 2
-- Size: 7 nodes
-- Levels: 3
+- Height: 1
+- Size: 3 nodes
+- Levels: 2
 - Balanced: Yes
 ```
 
@@ -1759,6 +2029,8 @@ Delete 3:
 ```
 
 ## Time Complexity Analysis
+
+The performance characteristics of binary trees are best understood through complexity analysis. As demonstrated in the complexity comparison chart above, binary trees provide logarithmic time complexity for most operations, making them dramatically more efficient than linear data structures for large datasets.
 
 ### Basic Operations
 
