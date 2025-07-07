@@ -2,9 +2,9 @@
 title: Binary Tree Data Structure
 parent: Data Structure and Algorithm
 author: Yupeng
-date: 2025-06-26
+date: 2025-07-05
 layout: default
-nav_order: 4.2
+nav_order: 5.1
 math: katex
 emoji: jemoji
 ---
