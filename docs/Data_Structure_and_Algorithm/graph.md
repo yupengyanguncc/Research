@@ -71,17 +71,17 @@ The **adjacency list** uses an array (or list) of lists, where each index repres
 
 ## Mathematical Perspective: Laplacian Matrix and Eigenvalues
 
-For a graph with adjacency matrix $A$ and degree matrix $D$ (where $D_{ii}$ is the degree of node $i$), the **Laplacian matrix** $L$ is defined as:
+For a graph with adjacency matrix $$A$$ and degree matrix $$D$$ (where $$D_{ii}$$ is the degree of node $$i$$), the **Laplacian matrix** $$L$$ is defined as:
 
-\[
-L = D - A
-\]
 
-The eigenvalues of $L$ are real and non-negative. The second smallest eigenvalue, usually denoted as $\lambda_2$, is called the **algebraic connectivity** of the graph.
+$$L = D - A$$
 
-- $\lambda_2 > 0$ if and only if the graph is connected.
-- The larger $\lambda_2$, the more robustly connected the graph is.
-- $\lambda_2$ is widely used in spectral graph theory, network robustness, and consensus algorithms.
+
+The eigenvalues of $$L$$ are real and non-negative. The second smallest eigenvalue, usually denoted as $$\lambda_2$$, is called the **algebraic connectivity** of the graph.
+
+- $$\lambda_2 > 0$$ if and only if the graph is connected.
+- The larger $$\lambda_2$$, the more robustly connected the graph is.
+- $$\lambda_2$$ is widely used in spectral graph theory, network robustness, and consensus algorithms.
 
 **Example:**
 For the above graph, you can compute $L$ and its eigenvalues to analyze its connectivity properties.
@@ -90,12 +90,12 @@ For the above graph, you can compute $L$ and its eigenvalues to analyze its conn
 
 ### Visualizing $\lambda_2$ in Different Graphs
 
-Below is a comparison of three graphs with different connectivity properties. The value of $\lambda_2$ is shown in each subfigure title:
+Below is a comparison of three graphs with different connectivity properties. The value of $$\lambda_2$$ is shown in each subfigure title:
 
 ![Comparison of lambda_2 in different graphs](../../assets/image/lambda2_graphs.png)
-*Figure: Left: Disconnected graph ($\lambda_2 = 0$). Middle: Connected but sparse graph (small $\lambda_2$). Right: Connected and dense graph (large $\lambda_2$).*
+*Figure: Left: Disconnected graph ($$\lambda_2 = 0$$). Middle: Connected but sparse graph (small $$\lambda_2$$). Right: Connected and dense graph (large $$\lambda_2$$).*
 
-- **Left:** The graph is disconnected, so $\lambda_2 = 0$.
+- **Left:** The graph is disconnected, so $$\lambda_2 = 0$$.
 - **Middle:** The graph is globally connected but has few edges, so $\lambda_2$ is positive but small, indicating weak connectivity.
 - **Right:** The graph is globally connected and has many edges, so $\lambda_2$ is much larger, indicating strong connectivity and robustness.
 
